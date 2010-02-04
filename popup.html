@@ -1,0 +1,35 @@
+<html>
+<head>
+    <title>Sample Page</title>
+    <script type="text/javascript">     
+   
+    function tester( i )
+    {
+
+	//a = tester1.hello(i);
+	document.myApplet.hello(i);
+	//alert("hello world i = " + i + ".");
+    	//var pps = Components.classes["@mozilla.org/network/protocol-proxy-service;1"].getService();
+	
+    }
+
+    function hello_test() {
+        var x = parseInt(document.getElementById("x").value);
+        tester(x);
+    }
+    </script>
+    
+    
+</head>
+<body>
+    x:<input id="x" type="text" size="1" /> <input type="button" value="Hello Test Button" onclick="javascript:hello_test();" />
+    
+    
+    <div id="cnv"></div>
+    <APPLET CODE="tester1.class"  
+    NAME="myApplet" 
+    HEIGHT=100 WIDTH=300>
+    </APPLET>
+</body>
+</html>
+
