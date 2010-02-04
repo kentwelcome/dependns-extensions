@@ -1,0 +1,18 @@
+<html>
+  <script>
+  function init(){
+	  text = "123";
+	  chrome.browserAction.setBadgeBackgroundColor({color:[208, 0, 24, 255]});
+	  chrome.browserAction.setIcon({path: "icon.png"});
+	  chrome.browserAction.setBadgeText({text:text});
+
+  }
+  </script>
+  <body onload="init()">
+	  <img id="icon" src="icon.png">
+	  <canvas id="canvas" width="19" height="19">
+  </body>
+</html>
+
+
+
