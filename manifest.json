@@ -1,0 +1,13 @@
+{
+  "name": "DepenDNS",
+  "version": "1.0",
+  "description": "DenpenDNS with chrome extensions.",
+  "browser_action": {
+    "default_icon": "icon.png",
+    "popup": "popup.html"
+  },
+  "permissions": [
+    "http://*/"
+  ]
+}
+
