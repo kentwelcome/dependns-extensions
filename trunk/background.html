@@ -1,17 +1,93 @@
 <html>
-  <script>
-  function init(){
-	  text = "123";
-	  chrome.browserAction.setBadgeBackgroundColor({color:[208, 0, 24, 255]});
-	  chrome.browserAction.setIcon({path: "icon.png"});
-	  chrome.browserAction.setBadgeText({text:text});
+	<!--<script type="text/javascript"  src="js/gears_init.js"></script> -->
+	<!--<script type="text/javascript"  src="js/sample.js"></script> -->
+	<script>
+		
+		var DepenDNS = {
+			start: function() {
+				//this.baseurl = chrome.i18n.getMessage("baseurl");
+				this.ips = [];
+				this.count = 0;
+				
+			},
+			get_domain_from_url: function(url) {
+				return  url.match(/:\/\/(.[^/]+)/)[1]
+			},
+			run: function(tab) {
+				this.count++;
+				var domain = this.get_domain_from_url(tab.url);
+				var count_string = this.count + '';
+				chrome.browserAction.setBadgeBackgroundColor( {color:[208, 0, 24, 255]} );
+				chrome.browserAction.setIcon({path: "icon/icon_22.png"});
+				this.badge(count_string,tab);
+			},
+			badge: function(text,tab) {
+				var obj = new Object();
+				obj.text = text;
+				obj.tabId = tab.id;
+				chrome.browserAction.setBadgeText(obj);
+			},
 
-  }
-  </script>
-  <body onload="init()">
-	  <img id="icon" src="icon.png">
-	  <canvas id="canvas" width="19" height="19">
-  </body>
+		};  // end of DepenDNS  
+		DepenDNS.start();
+		
+		chrome.tabs.onSelectionChanged.addListener(function(tabid,selectedInfo){
+			chrome.tabs.get(tabid,function(tab) {
+				DepenDNS.run(tab);
+			});
+		});
+
+		chrome.windows.onFocusChanged.addListener(function(windowId) {
+			chrome.tabs.getSelected(windowId, function(tab) {
+				DepenDNS.run(tab);
+			});
+		});
+
+
+		chrome.tabs.onUpdated.addListener(function(tabId, change, ttab) {
+			// make sure the tab hasn't changed...
+			chrome.tabs.getSelected(null, function(tab) {
+				DepenDNS.run(tab);
+			});
+		});
+		var db;
+		function websql(){
+			var success = false;
+			try{
+				db = window.openDatabase("dependns", "1.1", "DepenDNS History Database",  1024 * 1024);	
+				if(!db)
+					alert('Could not create database: ');
+			}
+			catch (ex){
+				alert('Could not create database: ' + ex.message);
+			}
+
+			/*if (window.google && google.gears) {
+
+				try {
+					db = google.gears.factory.create('beta.database');
+					if (db) {
+						db.open('database-DepenDNS');
+						db.execute('create table if not exists DepenDNS' +
+						' (Phrase varchar(255), Timestamp int)');
+
+						success = true;
+						// Initialize the UI at startup.
+						displayRecentPhrases();
+					}
+				}
+				catch (ex) {
+					alert('Could not create database: ' + ex.message);
+				}
+			}*/
+		};
+
+		websql();
+	</script>
+	<!-- <body onload="init()">
+		<img id="icon" src="/icon/icon_22.png">
+		<canvas id="canvas" width="22" height="22">
+	</body> -->
 </html>
 
 
