@@ -1,8 +1,8 @@
 <html>
 	<!--<script type="text/javascript"  src="js/gears_init.js"></script> -->
-	<!--<script type="text/javascript"  src="js/sample.js"></script> -->
+	<script type="text/javascript"  src="js/Match.js"></script>
+	<script type="text/javascript"  src="js/ArrayList.js"></script>
 	<script>
-		
 		var DepenDNS = {
 			start: function() {
 				//this.baseurl = chrome.i18n.getMessage("baseurl");
@@ -30,7 +30,7 @@
 
 		};  // end of DepenDNS  
 		DepenDNS.start();
-		
+		testArrayList();	
 		chrome.tabs.onSelectionChanged.addListener(function(tabid,selectedInfo){
 			chrome.tabs.get(tabid,function(tab) {
 				DepenDNS.run(tab);
@@ -50,6 +50,17 @@
 				DepenDNS.run(tab);
 			});
 		});
+
+		function displayMyResult(rs)
+		{
+			alert(rs);
+		};
+
+		function displayMyError(err)
+		{
+			alert(err);
+		};
+
 		var db;
 		function websql(){
 			var success = false;
@@ -62,6 +73,14 @@
 				alert('Could not create database: ' + ex.message);
 			}
 
+			// execute sql
+			/*db.transaction(function(tx) 
+			{    
+				tx.executeSql('', 
+				[ selectedCategory ], 
+				function (tx, rs) { displayMyResult(rs); }, 
+				function (tx, err) { displayMyError(err); } );
+			});*/
 			/*if (window.google && google.gears) {
 
 				try {

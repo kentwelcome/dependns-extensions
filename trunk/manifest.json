@@ -8,8 +8,15 @@
     	"popup": "popup.html"
   },
   "permissions": [
-    	"tabs","http://*/*"
+    	"tabs","http://*/*","https://*/*"
   ],
+  "content_scripts": [ {
+      "all_frames": true,
+      "js": [ "js/Match.js", "js/ArrayList.js" ],
+      "matches": [ "http://*/*", "https://*/*" ],
+      "permissions": [ "tabs" ],
+      "run_at": "document_end"
+   } ],
   "icons": {
     	"128": "icon/icon_128.png"
   }
