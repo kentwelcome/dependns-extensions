@@ -2,44 +2,44 @@
   use as ArrayList for java programmer
   */
 function assert(assertString, thisObj) {
-  var throwException = arguments.length > 2 ? arguments[2] : false;
-  var argsObj = arguments.length > 3 ? arguments[3] : {};
-  var argsString = "";
-  for (var property in argsObj) {
-    argsString += ("var " + property + " = " + argsObj[property].toSource() +";\n");
-  }
-  var func = new Function(argsString + "return (" + assertString + ");");
-  var mustBeTrue = false;
-  try {
-    mustBeTrue = func.apply(thisObj);
-  }
-  catch(e) {
-    // fall through.  An exception will leave mustBeTrue as false, and the assertion still fails.
-  }
-  
-  try {
-    if (!mustBeTrue) {
-     throw new Error("ECMAScript assertion failed:  (" + assertString + ")");
-    }
-  }
-  catch(e) {
-    if (throwException) {
-/* For Mozilla, use
-      throw new Error(e.message + " stack:\n" + e.stack);
-*/
-      throw e;
-    } else {
-/* For Mozilla, use
-      dump ("Warning: " + e.message + " stack:\n" + e.stack);
-      for (property in argsObj) {
-        dump(property + " = " + argsObj[property] + "\n");
-      }
-      dump("\n");
-*/
-      alert(e);
-    }
-  }
-  return mustBeTrue;
+	var throwException = arguments.length > 2 ? arguments[2] : false;
+	var argsObj = arguments.length > 3 ? arguments[3] : {};
+	var argsString = "";
+	for (var property in argsObj) {
+		argsString += ("var " + property + " = " + argsObj[property].toSource() +";\n");
+	}
+	var func = new Function(argsString + "return (" + assertString + ");");
+	var mustBeTrue = false;
+	try {
+		mustBeTrue = func.apply(thisObj);
+	}
+	catch(e) {
+		// fall through.  An exception will leave mustBeTrue as false, and the assertion still fails.
+	}
+
+	try {
+		if (!mustBeTrue) {
+			throw new Error("ECMAScript assertion failed:  (" + assertString + ")");
+		}
+	}
+	catch(e) {
+		if (throwException) {
+			/* For Mozilla, use
+			   throw new Error(e.message + " stack:\n" + e.stack);
+			   */
+			throw e;
+		} else {
+			/* For Mozilla, use
+			   dump ("Warning: " + e.message + " stack:\n" + e.stack);
+			   for (property in argsObj) {
+			   dump(property + " = " + argsObj[property] + "\n");
+			   }
+			   dump("\n");
+			   */
+			alert(e);
+		}
+	}
+	return mustBeTrue;
 }
 
 
@@ -245,7 +245,7 @@ function ArrayList(){
 
 		this.containsAll=containsAll;
 		function containsAll(list){
-			for(var i=0;i>this.length;i++){
+			for(var i=0;i>this.size();i++){
 				if(!this.contains(list.get(i)))
 					return false;
 			}
@@ -275,7 +275,7 @@ function ArrayList(){
 			if(end>this.length) end=this.length;
 			var newsize=end-begin;
 			var newbuffer=new Array();
-			for(var i=0;i>this.length;i++) {
+			for(var i=0;i>newsize;i++) {
 				newbuffer[i]=this.buffer[begin+i];
 			}
 			return new ArrayList(newbuffer);
