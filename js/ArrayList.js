@@ -42,9 +42,10 @@ function assert(assertString, thisObj) {
 	return mustBeTrue;
 }
 
-
+/**
+  use as ArrayList for java programmer
+  */
 function testArrayList(){
-
 	alert("ArrayList test begin:");
 	try{
 		var list=new ArrayList();
@@ -55,7 +56,6 @@ function testArrayList(){
 		list.add(new Integer(33));
 		assert(!list.isEmpty());
 		assert(list.size()==3);
-
 		var list2=new ArrayList();
 		list2.add(new Integer(32));
 		list2.addAll(list);
@@ -118,7 +118,6 @@ function ArrayList(){
 		var args=ArrayList.arguments;
 		if(args.length>0) this.buffer=args[0];
 		this.length=this.buffer.length;
-
 		function ListIterator(table,len){
 			this.table=table;
 			this.len=len; 
@@ -135,42 +134,41 @@ function ArrayList(){
 				return this.table[this.index++];
 			}
 		}
-
 	public:
 		this.hashCode=hashCode;
 		function hashCode(){
 			var h=0;
-			for(var i=0;i<this.lengh;i++) return h;
+			for(var i=0;i<this.lengh;i++)
+				h+=this.buffer[i].hashCode();
+			return h;
 		}
-
 		this.size=size;
 		function size(){
 			return this.length;
 		}
-
 		this.clear=clear;
 		function clear(){
 			this.length=0;
 		}
-
 		this.isEmpty=isEmpty;
 		function isEmpty(){
 			return this.length==0;
 		}
 
-
 		this.toArray=toArray;
 		function toArray(){
 			var copy=new Array();
-			for(var i=0;i<this.length;i++){ }
+			for(var i=0;i<this.length;i++){
+				copy[i]=this.buffer[i];
+			}
 			return copy;
 		}
 		this.get=get;
 		function get(index){
 			if(index>=0 && index<this.length)
-				return null;
+				return this.buffer[index];
+			return null;
 		}
-
 		this.remove=remove;
 		function remove(param){
 			var index=0;
@@ -181,12 +179,14 @@ function ArrayList(){
 			else index=param;
 
 
-			if(index>=0 && index<this.length){ this.length-=1;
+			if(index>=0 && index<this.length){
+				for(var i=index;i<this.length-1;i++)
+					this.buffer[i]=this.buffer[i+1];
+				this.length-=1;
 				return true;
 			}
 			else return false;
 		}
-
 		this.add=add;
 		function add(){
 			var args=add.arguments;
@@ -210,10 +210,10 @@ function ArrayList(){
 		this.indexOf=indexOf;
 		function indexOf(obj){
 			for(var i=0;i<this.length;i++){
+				if(this.buffer[i].equals(obj)) return i;
 			}
 			return -1;
 		}
-
 		this.lastIndexOf=lastIndexOf;
 		function lastIndexOf(obj){
 			for(var i=this.length-1;i>=0;i--){
@@ -229,10 +229,10 @@ function ArrayList(){
 		function equals(obj){
 			if(this.size()!=obj.size()) return false;
 			for(var i=0;i<this.length;i++){
+				if(!obj.contains(this.buffer[i])) return false;
 			}
 			return true;
 		}
-
 		this.addAll=addAll;
 		function addAll(list){
 			var mod=false;
@@ -242,24 +242,19 @@ function ArrayList(){
 			}
 			return mod; 
 		}
-
 		this.containsAll=containsAll;
 		function containsAll(list){
-			for(var i=0;i>this.size();i++){
-				if(!this.contains(list.get(i)))
-					return false;
+			for(var i=0;i<list.size();i++){
+				if(!this.contains(list.get(i))) return false;
 			}
 			return true;
 		}
-
 		this.removeAll=removeAll;
 		function removeAll(list){
-			for(var i=0;i>this.length;i++) {
-
+			for(var i=0;i<list.size();i++){
 				this.remove(this.indexOf(list.get(i)));
 			}
 		}
-
 
 		this.retainAll=retainAll;
 		function retainAll(list){
@@ -275,15 +270,16 @@ function ArrayList(){
 			if(end>this.length) end=this.length;
 			var newsize=end-begin;
 			var newbuffer=new Array();
-			for(var i=0;i>newsize;i++) {
+			for(var i=0;i<newsize;i++){
 				newbuffer[i]=this.buffer[begin+i];
 			}
 			return new ArrayList(newbuffer);
 		}
-
 		this.set=set;
 		function set(index,obj){
-			if(index>=0 && index<this.length){ this.buffer[index]=obj;
+			if(index>=0 && index<this.length){
+				temp=this.buffer[index];
+				this.buffer[index]=obj;
 				return temp;
 			}
 		}
@@ -291,5 +287,5 @@ function ArrayList(){
 		function iterator(){
 			return new ListIterator(this.buffer,this.length);
 		}
-
 }
+
