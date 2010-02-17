@@ -1,0 +1,50 @@
+<html>
+	<body>
+		<p><b> Javascript display</b>
+		<p><div id="display">&nbsp;</div>
+	</body>
+	<script type="text/javascript" src="ArrayList.js"></script>
+	<script type="text/javascript" src="Integer.js"></script>
+	<script type="text/javascript" src="String.js"></script>
+	<!--<script type="text/javascript" src="../../sample.js"></script>-->
+	<script>
+		var index = 0;
+		function init(){
+			var status = document.getElementById('display');
+			status.innerHTML = '';
+		}
+		function display( text ){
+			var id = 'phrase' + index++;
+			var status = document.getElementById('display');
+			status.innerHTML += '<span id="'+ id + '"></span><br>';
+			var bullet = '(' + ( index ) + ') ';
+			document.getElementById(id).innerHTML = bullet +'&nbsp;' + text ;
+			
+		}
+		function test(){
+			var list = new ArrayList();
+			var a;
+			list.add(new Integer(300) );
+			list.add(new Integer(1) );
+			list.add(500);
+
+			var status = document.getElementById('display');
+			//status.innerHTML = '';
+			
+			for( var i = 0 ; i < list.size() ; i++ )
+			{
+				var id = 'phrase' + index++;
+				status.innerHTML += '<span id="'+ id + '"></span><br>';
+				var bullet = '(' + ( index+ 1) + ') ';	
+				document.getElementById(id).innerHTML =  bullet + '&nbsp;' + list.get(i) ;
+			}
+		}
+		init();
+		var IP = new ArrayList();
+		IP.add('140.114.63.1');
+		IP.add('140.114.64.1');
+		for ( var i = 0 ; i < IP.size() ; i++ )
+			display( IP.get(i) );
+	</script>
+
+</html>
