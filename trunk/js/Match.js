@@ -1,15 +1,17 @@
 function Match( AnswerList , HistoryList , oneTimeCount ) {
 	private:
-		var AnswerList=new ArrayList();
-		var HistoryList=new ArratList();
-		var IpListAll=new ArratList();
-		var IpHistoryList=new ArratList();
+		//var AnswerList= new ArrayList();
+		//var HistoryList= new ArrayList();
+		var IpListAll= new ArrayList();
+		var IpHistoryList= new ArrayList();
 		var region;
-		var onTimeCount;
+		//var onTimeCount;
 	public: 
 		this.AnswerList = AnswerList;
 		this.HistoryList = HistoryList;
 		this.oneTimeCount = oneTimeCount;
+		
+		//display("His size "+this.HistoryList.size());
 
 		this.runMatchAlgorithm = runMatchAlgorithm;
 		function runMatchAlgorithm( resolverCount ){
@@ -25,8 +27,8 @@ function Match( AnswerList , HistoryList , oneTimeCount ) {
 		this.countRegion = countRegion;
 		function countRegion()
 		{
-			region = ipListAll.size() / ineTimeCount;
-			alert("Region:"+region);
+			region = IpListAll.size() / oneTimeCount;
+			display("Region:"+region);
 		}
 
 		this.ipDifference = ipDifference;
@@ -42,7 +44,7 @@ function Match( AnswerList , HistoryList , oneTimeCount ) {
 
 			//找出n_max
 			var n_max = 0;
-			for ( var i = 0 ; i < IPListAll.size() ; i++ ){
+			for ( var i = 0 ; i < IpListAll.size() ; i++ ){
 				var Ans = IpListAll.get(i);
 				if (Ans.getCount() > n_max){
 					n_max = Ans.getCount();
@@ -64,7 +66,7 @@ function Match( AnswerList , HistoryList , oneTimeCount ) {
 		this.historyDifference = historyDifference;
 		function historyDifference() {
 			//將history list全整理到單一array list中
-			IpHistoryList = new ArratList();
+			IpHistoryList = new ArrayList();
 			for ( var i = 0 ; i < HistoryList.size() ; i++ )
 			{
 				var ipList = new ArrayList();
@@ -169,6 +171,7 @@ function Match( AnswerList , HistoryList , oneTimeCount ) {
 			for( var i = 0 ; i < AnswerList.size() ; i++ )
 			{
 				var Ans = AnswerList.get(i);
+				//display(Ans);
 				Ans.setClassCountPercent(resolverCount);
 			}
 			for( var i = 0 ; i < HistoryList.size() ; i++ )
@@ -181,12 +184,17 @@ function Match( AnswerList , HistoryList , oneTimeCount ) {
 
 		this.printAnswer = printAnswer;
 		function printAnswer(){
-			alert("歷史資料");
+			display("歷史資料");
+			for( var i = 0 ; i < HistoryList.size() ; i++ ){
+				var His = HistoryList.get(i);
+				var temp = His.getClassCount/48.0;
+				display("子網路: ");
+			}
 		}
 
 		this.getIPListAll = getIPListAll;
 		function getIPListAll(){
-			return ipListAll;
+			return IpListAll;
 		}
 
 		this.getRegion = getRegion;

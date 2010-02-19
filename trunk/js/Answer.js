@@ -1,23 +1,21 @@
 function Answer( bClass , ip ) {
 	private:
-		var bClass;
+		//var bClass;
 		var classCount;
 		var classCountPercent;
-		var ipList;
+		var ipList = new ArrayList();
 
 	public:
-		this = function (){
+		if( !bClass && !ip ){
 			this.bClass = "";
 			this.classCount = 0;
 			this.classCountPercent = 0.0;
-			this.ipList = new ArrayList();
-		}
-		
-		this = function( bClass , ip ){
+			this.ipList = ipList;
+		} else {
 			this.bClass = bClass;
 			this.classCount = 0;
 			this.classCountPercent = 0;
-			this.ipList = new ArrayList();
+			this.ipList = ipList;
 			addIP(ip);
 		}
 	
@@ -62,7 +60,7 @@ function Answer( bClass , ip ) {
 			return classCount;
 		}
 
-		this.getClassCountPercent(){
+		this.getClassCountPercent = function(){
 			return classCountPercent;
 		}
 		
