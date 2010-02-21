@@ -28,26 +28,27 @@ function Match( AnswerList , HistoryList , oneTimeCount ) {
 		function countRegion()
 		{
 			region = IpListAll.size() / oneTimeCount;
+			display("IPListAll.size=" + IpListAll.size() + "oneTimecount:" + oneTimeCount );
 			display("Region:"+region);
 		}
 
 		this.ipDifference = ipDifference;
 		function ipDifference(){
 			//將answer list全整理到單一array list中
-			IpListAll = new ArrayList();
+			//IpListAll = new ArrayList();
 			for ( var i = 0 ; i < AnswerList.size() ; i++ )
 			{
-				var ipList = new ArrayList();
 				var Ans = AnswerList.get(i)
-					ipList = Ans.getIPList();
+				var ipList = Ans.getIPList();
+				IpListAll.addAll(ipList);
 			}
 
 			//找出n_max
 			var n_max = 0;
 			for ( var i = 0 ; i < IpListAll.size() ; i++ ){
-				var Ans = IpListAll.get(i);
-				if (Ans.getCount() > n_max){
-					n_max = Ans.getCount();
+				var AnsIP = IpListAll.get(i);
+				if (AnsIP.getCount() > n_max){
+					n_max = AnsIP.getCount();
 				}
 			}
 			//容忍值
@@ -56,7 +57,7 @@ function Match( AnswerList , HistoryList , oneTimeCount ) {
 			//Count alapha
 			for( var i = 0 ; i < IpListAll.size() ; i++ ){
 				var Ans = IpListAll.get(i);
-				if ( Ans.getCount() >= N_max*confidence ){
+				if ( Ans.getCount() >= n_max*confidence ){
 					Ans.setA(1);
 				}
 
@@ -66,26 +67,25 @@ function Match( AnswerList , HistoryList , oneTimeCount ) {
 		this.historyDifference = historyDifference;
 		function historyDifference() {
 			//將history list全整理到單一array list中
-			IpHistoryList = new ArrayList();
+			//IpHistoryList = new ArrayList();
 			for ( var i = 0 ; i < HistoryList.size() ; i++ )
 			{
-				var ipList = new ArrayList();
-				var Ans = HistoryList.get(i);
-				ipList = Ans.getIPList();
+				var His = HistoryList.get(i);
+				var ipList = His.getIPList();
 				IpHistoryList.addAll(ipList);
 			}
 			//比對歷史資料
 			for ( var i = 0 ; i < IpListAll.size() ; i++ )
 			{
-				var AnsIP1 = IpListAll.get(i);
-				var ip1 = AnsIP.getIP();
-				for ( var j = 0 ; j < IpHistoryList().size() ; j++ )
+				var iplist = IpListAll.get(i);
+				var ip1 = iplist.getIP();
+				for ( var j = 0 ; j < IpHistoryList.size() ; j++ )
 				{
-					var AnsIP2 = IpHistoryList().get(i);
-					var ip2 = AnsIP.getIP();
-					if( ip1.equals(ip2) )
+					var HisIP = IpHistoryList.get(j);
+					var ip2 = HisIP.getIP();
+					if( ip1 == ip2 )
 					{
-						AnsIP1.setB(1);
+						iplist.setB(1);
 						break;
 					}
 				}
@@ -99,28 +99,29 @@ function Match( AnswerList , HistoryList , oneTimeCount ) {
 			{
 				var Ans = AnswerList.get(0);
 				var bClass = Ans.getBClass();
-				var tempIP = new ArrayList();
+				//var tempIP = new ArrayList();
+				var tempIP;
 
 				for ( var i = 0 ; i < HistoryList.size() ; i++ )
 				{
 					var His = HistoryList.get(i);
-					if( bClass.equals(His.getBClass()) )
+					if( bClass == His.getBClass() )
 					{
-						tempIP = His.getIPlist();
+						tempIP = His.getIPList();
 						break;
 					}
 				}
 
-				for( var i = 0 ; i < IpListALL.size() ; i++ )
+				for( var i = 0 ; i < IpListAll.size() ; i++ )
 				{
 					var AnsIP = IpListAll.get(i)
-						var ip = AnsIP.getIP();
+					var ip = AnsIP.getIP();
 					for( var j = 0 ; j < tempIP.size() ; j++ )
 					{
-
-						if( ip.equals(TempIP.getIP()) )
+						var temp = tempIP.get(j);
+						if( ip == temp.getIP() )
 						{
-							difference = AnsIP.getCountPercent() - TempIP.getCountPercent();
+							difference = AnsIP.getCountPercent() - temp.getCountPercent();
 							if ( Math.abs(difference) < 0.10 )
 							{
 								AnsIP.setC(1);
@@ -186,9 +187,11 @@ function Match( AnswerList , HistoryList , oneTimeCount ) {
 		function printAnswer(){
 			display("歷史資料");
 			for( var i = 0 ; i < HistoryList.size() ; i++ ){
+				//var Ans = AnswerList.get(i);
 				var His = HistoryList.get(i);
-				var temp = His.getClassCount/48.0;
-				display("子網路: ");
+				var temp = His.getClassCount()/48.0;
+				display("子網路: " + His.getBClass() + "&nbsp;" + temp + "&nbsp;" + His.getClassCountPercent() );
+				His.printAnswer();
 			}
 		}
 
