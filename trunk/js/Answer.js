@@ -71,7 +71,10 @@ function Answer( bClass , ip ) {
 		
 		this.printAnswer = printAnswer;
 		function printAnswer(){
-			alert("print Answer");
+			for( var i = 0 ; i < ipList.size() ; i++ ){
+				var IP = ipList.get(i);
+				display("IP " + (i+1) + ": " + IP.getIP() + "&nbsp;" + IP.getCount() + "&nbsp;" + IP.getCountPercent());
+			}
 			// todo fix with display in HTML 
 		}
 }
