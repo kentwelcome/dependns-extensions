@@ -99,8 +99,7 @@ function Match( AnswerList , HistoryList , oneTimeCount ) {
 			{
 				var Ans = AnswerList.get(0);
 				var bClass = Ans.getBClass();
-				//var tempIP = new ArrayList();
-				var tempIP;
+				var tempIP = new ArrayList();
 
 				for ( var i = 0 ; i < HistoryList.size() ; i++ )
 				{
@@ -135,16 +134,16 @@ function Match( AnswerList , HistoryList , oneTimeCount ) {
 				{
 					var Ans = AnswerList.get(i);
 					var bClass = Ans.getBClass();
-					for(var j=0 ; j<HistoreList.size() ; j++)
+					for(var j=0 ; j<HistoryList.size() ; j++)
 					{
 						var His = HistoryList.get(j);
 						if( bClass == His.getBClass() )
 						{
 							difference = Ans.getClassCountPercent() - His.getClassCountPercent();
-							alert("DIFF"+difference);
+							display("DIFF"+difference);
 							if(Math.abs(difference)<0.10)
 							{
-
+								var temp = new ArrayList();
 								var temp = Ans.getIPList();
 								for ( var x=0 ; x < temp.size() ; x++ )
 								{
@@ -190,8 +189,14 @@ function Match( AnswerList , HistoryList , oneTimeCount ) {
 				//var Ans = AnswerList.get(i);
 				var His = HistoryList.get(i);
 				var temp = His.getClassCount()/48.0;
-				display("子網路: " + His.getBClass() + "&nbsp;" + temp + "&nbsp;" + His.getClassCountPercent() );
+				temp = Math.floor(temp*1000) / 1000.0;
+				display("子網路:&nbsp;" + His.getBClass() + "&nbsp;" + temp + "&nbsp;" + His.getClassCountPercent() );
 				His.printAnswer();
+			}
+			display("這次資料");
+			for( var i = 0 ; i < AnswerList.size() ; i++ ){
+				var Ans = AnswerList.get(i);
+				display("子網路:&nbsp;" + Ans.getBClass()+"&nbsp;"+ Ans.getClassCount() + "&nbsp;" + Ans.getClassCountPercent() );
 			}
 		}
 

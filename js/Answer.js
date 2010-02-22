@@ -1,8 +1,8 @@
 function Answer( bClass , ip ) {
 	private:
 		//var bClass;
-		var classCount;
-		var classCountPercent;
+		var classCount = 0;
+		var classCountPercent = 0;
 		var ipList = new ArrayList();
 
 	public:
@@ -41,7 +41,7 @@ function Answer( bClass , ip ) {
 		function setClassCountPercent( resolverCount ){
 			classCountPercent = classCount / resolverCount;
 			// what's this mean? 
-			classCountPercent = (classCountPercent*1000)/1000.0;  
+			classCountPercent = ( Math.floor(classCountPercent*1000) )/1000.0;  
 			for( var i = 0 ; i < ipList.size() ; i++ )
 			{
 				var AnsIP = ipList.get(i);

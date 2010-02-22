@@ -34,7 +34,7 @@ function AnswerIP( ip ) {
 		this.setCountPercent = setCountPercent;
 		function setCountPercent( bClassTotalCount ){
 			countPercent = count / bClassTotalCount;
-			countPercent = (countPercent*1000)/1000.0;
+			countPercent = ( Math.floor(countPercent*1000) )/1000.0;
 		}
 		
 		this.setCanRandom = setCanRandom;
@@ -43,18 +43,18 @@ function AnswerIP( ip ) {
 		}
 
 		this.setA = setA;
-		function setA(a){
-			this.a = a;
+		function setA(A){
+			a = A;
 		}
 
 		this.setB = setB;
-		function setB(b){
-			this.b = b;
+		function setB(B){
+			b = B;
 		}
 
 		this.setC = setC;
-		function setC(c){
-			this.c = c;
+		function setC(C){
+			c = C;
 		}
 		
 		this.getIP = getIP;
