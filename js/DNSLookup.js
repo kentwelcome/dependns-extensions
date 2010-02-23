@@ -100,15 +100,18 @@ function DNSLookup(){
 		}
 		
 		this.dodebug = function(){
+			domainName = "www.nthu.edu.tw";
 			var Ans = new ArrayList();
 			var His = new ArrayList();
 			for( var i = 0 ; i < 17 ; i++ ){
 				if(i%2 == 0)
-					response.addToAnswerList("140.114.63.1" , 32 );
+					response.addToAnswerList("140.114.63.10" , 32 );
 				else
 					response.addToAnswerList("140.112.64.1" , 32 );
 			}
 			
+			var HisDB = new HistoryLookup();
+
 			var HisList = new Answer( "140.114" , "140.114.63.1");
 			for( var i = 0 ; i < 5667 ; i++ )
 				HisList.addIP("140.114.63.1");
