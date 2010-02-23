@@ -10,6 +10,8 @@
 	<script type="text/javascript" src="String.js"></script>
 	<script type="text/javascript" src="Match.js"></script>
 	<script type="text/javascript" src="IPChoice.js"></script>
+	<script type="text/javascript" src="DNSLookup.js"></script>
+	<script type="text/javascript" src="Response.js"></script>
 	<!--<script type="text/javascript" src="../../sample.js"></script>-->
 	<script>
 		var index = 0;
@@ -104,10 +106,10 @@
 		var resolvecount = 17;
 		init();
 		var IP = new ArrayList();
-		IP.add('140.114.63.1');
-		IP.add('140.114.64.1');
-		for ( var i = 0 ; i < IP.size() ; i++ )
-			display( IP.get(i) );
+		//IP.add('140.114.63.1');
+		//IP.add('140.114.64.1');
+		//for ( var i = 0 ; i < IP.size() ; i++ )
+		//	display( IP.get(i) );
           	//var d = new websql();
 		//d.getDomainID("www.yahoo.com");
 		var AnsList = new Answer( "140.114" , "140.114.63.1");
@@ -123,13 +125,16 @@
 		//Ans.add(AnsList2);
 		His.add(HisList);
 		var AnsIpList = AnsList.ipList.get(0);
-		display(Ans.size());
+		//display(Ans.size());
 		var match = new Match( Ans , His , 1 );
-		match.runMatchAlgorithm(resolvecount);
-		var iplist = match.getIPListAll();
-		var region = match.getRegion();
-		var ipChoice = new IPChoice( iplist , region );
-		ipChoice.countGrade();
+		//match.runMatchAlgorithm(resolvecount);
+		//var iplist = match.getIPListAll();
+		//var region = match.getRegion();
+		//var ipChoice = new IPChoice( iplist , region );
+		//ipChoice.countGrade();
+		var dnslookup = new DNSLookup();
+		dnslookup.dodebug();
+
 	</script>
 
 </html>
