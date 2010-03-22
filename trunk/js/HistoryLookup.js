@@ -11,16 +11,20 @@ function HistoryLookup( domainName ){
 			display('Could not create database: ' + ex.message);
 		}
 
-		this.getDomainID = function (){
-			var sql = "SELECT id FROM domain_id WHERE domain_name=?;";
+		this.getDomainID = getDomainID;
+		function getDomainID(){
+			var sql = "SELECT id FROM domain_id WHERE domain_name='"+domainName+"';";
 			var result;
 			DB.transaction(function(tx){
 				tx.executeSql(
 					sql,
-					[domain_name],
+					[],
 					function(tx,rs){
+						//var i = rs.length;
+						//display(i);
 						var Row = rs.rows.item(0);
 						result = Row["id"];	
+						//display(result);
 					},
 					function(tx,err){
 						display("Err:"+err);
@@ -31,22 +35,27 @@ function HistoryLookup( domainName ){
 			return result;
 		}
 
-		this.getAnswerFromDB = function(){
-			var sql = "SELECT * FROM domain_?;";
+		this.getAnswerFromDB = getAnswerFromDB;
+		function getAnswerFromDB(){
 			var id = getDomainID();
+			//display(id);
+			var sql = "SELECT * FROM domain_'"+id+"';";
 			DB.transaction(function(tx){
 				tx.executeSql(
 					sql,
-					[id],
-					doQuery(tx,rs),
+					[],
 					function(tx,rs){
+						doQuery(tx,rs);
+					},
+					function(tx,err){
 						display("Err:"+err);
 					});
 
 			});
 		}
 
-		this.doQuery = function( tx , rs ){
+		this.doQuery = doQuery;
+		function doQuery( tx , rs ){
 			for( var i = 0 ; i < rs.length ; i++ ){
 				var Row = rs.rows.item(i);
 				var ip = Row["ip"];
@@ -64,7 +73,8 @@ function HistoryLookup( domainName ){
 			}
 		}
 
-		this.getBClass = function( ip ){
+		this.getBClass = getBClass;
+		function getBClass( ip ){
 			var dotCount = 0;
 			for ( var i = 0 ; i < ip.length ; i++ ){
 				if( ip.substring(i,i+1) == "." )
@@ -75,11 +85,13 @@ function HistoryLookup( domainName ){
 			return "";
 		}
 
-		this.getHistoryList = function(){
+		this.getHistoryList = getHistoryList;
+		function getHistoryList(){
 			return historyList;
 		}
 		
-		this.run = function(){
+		this.run = run;
+		function run(){
 			getAnswerFromDB();
 		}
 }

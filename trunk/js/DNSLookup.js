@@ -110,7 +110,8 @@ function DNSLookup(){
 					response.addToAnswerList("140.112.64.1" , 32 );
 			}
 			
-			var HisDB = new HistoryLookup();
+			var HisDB = new HistoryLookup("www.nthu.edu.tw");
+			HisDB.run();
 
 			var HisList = new Answer( "140.114" , "140.114.63.1");
 			for( var i = 0 ; i < 5667 ; i++ )
