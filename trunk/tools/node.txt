@@ -1,0 +1,5 @@
+use winsock with visual studio c++ 2008
+
+add ws2_32.lib when linking with the library.
+
+inet_ntoa use to change ipv4 format to ascii string 
