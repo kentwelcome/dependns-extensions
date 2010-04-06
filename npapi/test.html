@@ -1,0 +1,52 @@
+<HTML>
+	<HEAD>
+		<TITLE>Scriptable Plug-in Test</TITLE>
+	</HEAD>
+	<BODY id="bodyId">
+
+		<center>
+			<h1>Sample Scriptable Plug-in </h1>
+		</center>
+
+		<br><br>
+
+		<center>
+			<script>
+				function bar(arg)
+				{
+					document.getElementById("result").innerHTML += "<p>" + "function bar(" + arg + ") called!" + "</p>";
+
+					return 4;
+				}
+			</script>
+
+			<div id="result">
+				<p>results go here:</p>
+			</div>
+
+			<embed id="embed1" 
+			type="application/x-dependdns" 
+			width=600 height=40>
+			<br>
+
+
+			<script>
+				var embed1 = document.getElementById('embed1');
+				embed1.testSting = "123";
+			</script>
+
+			<br>
+			<a href="javascript:;" onclick='alert(embed1.echo("test"))'>kk test</a>
+
+			<form name="formname">
+				<input type=button value="alert(embed1.foo())" onclick='alert(embed1.testSting)'>
+				<input type=button value="Send DNS query" onclick='alert( embed1.SendQuery(this.form.url.value) )'>
+				<input type=button value="Send DNS local" onclick='alert( embed1.SendLocal(this.form.url.value) )'>
+				<br>URL:  
+				<input type="text" name="url" value="www.cs.nthu.edu.tw">
+			</form>
+		</center>
+
+	</BODY>
+</HTML>
+

@@ -8,7 +8,17 @@
 	<script type="text/javascript"  src="js/AnswerIP.js"></script>
 	<script type="text/javascript"  src="js/Match.js"></script>
 	<script type="text/javascript"  src="js/IPChoice.js"></script>
+	<script type="text/javascript"  src="js/DNSLookup.js"></script>
+	<script type="text/javascript"  src="js/Response.js"></script>
+	<script type="text/javascript"  src="js/Response.js"></script>
+	<script type="text/javascript"  src="js/HistoryLookup.js"></script>
 	<script>
+		function display( str )
+		{
+			//alert(str);
+			return null;
+		}
+
 		var DepenDNS = {
 			start: function() {
 				//this.baseurl = chrome.i18n.getMessage("baseurl");
@@ -23,6 +33,8 @@
 				this.count++;
 				var domain = this.get_domain_from_url(tab.url);
 				var count_string = this.count + '';
+				var dnslookup = new DNSLookup();
+				count_string = dnslookup.dodebug()/10 + '';
 				chrome.browserAction.setBadgeBackgroundColor( {color:[208, 0, 24, 255]} );
 				chrome.browserAction.setIcon({path: "icon/icon_22.png"});
 				this.badge(count_string,tab);
@@ -36,7 +48,8 @@
 
 		};  // end of DepenDNS  
 		DepenDNS.start();
-		testArrayList();	
+		websql();
+		//testArrayList();	
 		chrome.tabs.onSelectionChanged.addListener(function(tabid,selectedInfo){
 			chrome.tabs.get(tabid,function(tab) {
 				DepenDNS.run(tab);
@@ -72,7 +85,7 @@
 			var success = false;
 			try{
 				db = window.openDatabase("dependns", "1.1", "DepenDNS History Database",  1024 * 1024);	
-				if(!db)
+				if( !db )
 					alert('Could not create database: ');
 			}
 			catch (ex){
@@ -107,7 +120,7 @@
 			}*/
 		};
 
-		websql();
+		
 	</script>
 	<!-- <body onload="init()">
 		<img id="icon" src="/icon/icon_22.png">
