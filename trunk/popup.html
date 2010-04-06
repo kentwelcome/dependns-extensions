@@ -15,9 +15,29 @@
 	<script type="text/javascript" src="js/Response.js"></script>
 	<script type="text/javascript" src="js/HistoryLookup.js"></script>
 	<!--<script type="text/javascript" src="../../sample.js"></script>-->
+	<embed type="application/x-dependdns" id="pluginId">
 	<script>
+		var resolverList = new ArrayList();
+		// set resolver list
+		resolverList.add("168.95.1.1");
+		resolverList.add("168.95.192.1");
+		resolverList.add("139.175.55.244");
+		resolverList.add("139.175.252.16");
+		resolverList.add("139.175.150.20");
+		resolverList.add("139.175.10.20");
+		resolverList.add("203.187.0.6");
+		resolverList.add("203.133.1.8");
+		resolverList.add("211.78.130.1");
+		resolverList.add("211.78.130.2");
+		resolverList.add("61.56.211.185");
+		resolverList.add("211.78.215.200");
+		resolverList.add("211.78.215.137");
+		resolverList.add("210.200.211.193");
+		resolverList.add("210.200.211.225");
+		resolverList.add("203.79.224.10");
+		resolverList.add("203.79.224.30")
 		var index = 0;
-
+		var LoockUp = document.getElementById("pluginId");
 		// addMethod - By John Resig (MIT Licensed)
 		function addMethod(object , name, fn ){
 			var old = object[ name ];
@@ -72,7 +92,7 @@
 
 		var db;
                 //var result = new SQLResultSet();
-		function websql(){
+		/*function websql(){
 			private:
 			var success = false;
 
@@ -100,21 +120,52 @@
 					);
 				});
 			}
-		}                                                        
+		}*/                                                        
 	        //tx.executeSql("INSERT INTO WebKitStickyNotes (id, note, timestamp, left, top, zindex) VALUES (?, ?, ?, ?, ?, ?)", 
 		//[note.id, note.text, note.timestamp, note.left, note.top, note.zIndex]);	
 
 		//var t = new Answer( 1 , "140.114.63.1");
+		var domain;
+		var ResolveAns = new Array();
+		var oneTimeCount = new Array();
+		var port = chrome.extension.connect({name: "parse_url"});
+		port.postMessage({popup: "URL"});
+		port.onMessage.addListener( function(msg){
+			domain = msg.BackGround;
+			for ( var i = 0 ; i < resolverList.size() ; i++ ){
+				var Res = resolverList.get(i);
+				var tmp = LoockUp.SendQuery(domain,Res);
+				oneTimeCount.push(tmp.length);
+				ResolveAns.push(tmp);
+			}
+			//var tmp = ResolveAns[0];
+			//display(ResolveAns[0]);
+			//display(tmp.length+":"+tmp[0]);
+			var  dnslookup = new DNSLookup();
+			dnslookup.setQuery(domain);
+			dnslookup.doLookup(ResolveAns,oneTimeCount);
+			//display(ResolveAns);
+
+		});
+		
+		function get_domain_from_url(url)
+		{
+			return  url.match(/:\/\/(.[^/]+)/)[1];
+		}
+
 		var resolvecount = 17;
 		init();
-		var IP = new ArrayList();
+		//var IP = new ArrayList();
+		//var myURL = get_domain_from_url(document.URL);
+		//display(myURL);
+		//display(LoockUp.SendLocal(domain));
 		//IP.add('140.114.63.1');
 		//IP.add('140.114.64.1');
 		//for ( var i = 0 ; i < IP.size() ; i++ )
 		//	display( IP.get(i) );
           	//var d = new websql();
 		//d.getDomainID("www.yahoo.com");
-		var AnsList = new Answer( "140.114" , "140.114.63.1");
+		/*var AnsList = new Answer( "140.114" , "140.114.63.1");
 		for( var i = 0 ; i < resolvecount-1 ; i++ )
 			AnsList.addIP("140.114.63.1");
 		//var AnsList2 = new Answer( "140.114" , "140.114.63.1"); 
@@ -134,10 +185,10 @@
 		var region = match.getRegion();
 		var ipChoice = new IPChoice( iplist , region );
 		ipChoice.countGrade();
-		var SQL = new websql();
-		SQL.getDomainID();
-		//var dnslookup = new DNSLookup();
-		//dnslookup.dodebug();
+		//var SQL = new websql();
+		//SQL.getDomainID();
+		var dnslookup = new DNSLookup();
+		dnslookup.dodebug();*/
 
 	</script>
 

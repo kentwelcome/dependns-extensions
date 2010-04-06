@@ -4,7 +4,7 @@ function DNSLookup(){
 		var resultIngo;
 		var type;
 		var resolverCount;
-		var sr;
+		//var sr;
 		var resolverList = new ArrayList();
 		var lookupThread;
 		var historyThread;
@@ -16,43 +16,56 @@ function DNSLookup(){
 		resloverCount = 0;
 
 		this.setQuery = setQuery;
-		function setQuery(domainName , type ){
+		function setQuery( domainName ){
 			this.domainName = domainName;
-			this.type = type;
+			//this.type = type;
 			resultInfo = "";
 			setResultInfo("Lookup for "+domainName);
 		}
 
 		this.setResolver = setResolver;
-		function setResolver( sr , resolverList ){
-			this.sr = sr;
+		function setResolver( resolverList ){
+			//this.sr = sr;
 			this.resolverList = resolverList;
 			resolverCount = resolverList.size();
-			setResultUIfo("The Number of Resolvers:"+resolverCount);
+			setResultInfo("The Number of Resolvers:"+resolverCount);
 		}
 
 		this.doLookup = doLookup;
-		function doLookup(){
+		function doLookup(ResolveAns,oneTimeCount){
 
 			// Lookup by resolver
-			for( var i = 0 ; i < resolverCount ; i++ )
+			/*for( var i = 0 ; i < resolverCount ; i++ )
 			{
 				var Res = resolverList.get(i);
-				if( Res.getAvailable() ){
+				//if( Res.getAvailable() ){
 					// start Lookup URL
+				//}
+				//LoockUp.SendQuery(this.domain,Res);
+				
+			}*/
+			display(ResolveAns);
+			display(ResolveAns.length);
+			for ( var i = 0 ; i < ResolveAns.length ; i++ ){
+				var ResTmp = ResolveAns[i];
+				for ( var j = 0 ; j < ResTmp.length ; j++ ){
+					response.addToAnswerList( ResTmp[j] , 32 );
+					display("DNS" + i +":"+ ResTmp[j]);
 				}
 			}
 
+
 			// run History thread
-			
+			var historyList = new ArrayList();
 			//¾ã²zResponse
 			orderResponse();
 
-			var mode_OneTimeCount = checkOneTimeCount();
+			var mode_OneTimeCount = 1;//= checkOneTimeCount();
 			var match = new Match( answerList , historyList , mode_OneTimeCount );
-			match.renMatchAlgorithm(resolverCount);
+			match.runMatchAlgorithm(resolverCount);
 			var ipChoice = new IPChoice( match.getIPListAll() , match.getRegion() );
 			ipChoice.countGrade();
+			return ipChoice.Grade;
 		}
 
 		this.orderResponse = orderResponse;
