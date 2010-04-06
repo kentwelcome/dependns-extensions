@@ -16,7 +16,7 @@ function Match( AnswerList , HistoryList , oneTimeCount ) {
 		this.runMatchAlgorithm = runMatchAlgorithm;
 		function runMatchAlgorithm( resolverCount ){
 			arrangeAnswer( resolverCount );
-			printAnswer();
+			//printAnswer();
 
 			ipDifference();	//alpha
 			historyDifference(); //beta
@@ -28,8 +28,8 @@ function Match( AnswerList , HistoryList , oneTimeCount ) {
 		function countRegion()
 		{
 			region = IpListAll.size() / oneTimeCount;
-			display("IPListAll.size=" + IpListAll.size() + "oneTimecount:" + oneTimeCount );
-			display("Region:"+region);
+			//display("IPListAll.size=" + IpListAll.size() + "oneTimecount:" + oneTimeCount );
+			//display("Region:"+region);
 		}
 
 		this.ipDifference = ipDifference;
@@ -140,7 +140,7 @@ function Match( AnswerList , HistoryList , oneTimeCount ) {
 						if( bClass == His.getBClass() )
 						{
 							difference = Ans.getClassCountPercent() - His.getClassCountPercent();
-							display("DIFF"+difference);
+							//display("DIFF"+difference);
 							if(Math.abs(difference)<0.10)
 							{
 								var temp = new ArrayList();
@@ -184,7 +184,7 @@ function Match( AnswerList , HistoryList , oneTimeCount ) {
 
 		this.printAnswer = printAnswer;
 		function printAnswer(){
-			display("歷史資料");
+			//display("歷史資料");
 			for( var i = 0 ; i < HistoryList.size() ; i++ ){
 				//var Ans = AnswerList.get(i);
 				var His = HistoryList.get(i);

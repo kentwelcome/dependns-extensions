@@ -104,10 +104,10 @@ function DNSLookup(){
 			var Ans = new ArrayList();
 			var His = new ArrayList();
 			for( var i = 0 ; i < 17 ; i++ ){
-				if(i%2 == 0)
+				//if(i%2 == 0)
 					response.addToAnswerList("140.114.63.10" , 32 );
-				else
-					response.addToAnswerList("140.112.64.1" , 32 );
+				//else
+				//	response.addToAnswerList("140.112.64.1" , 32 );
 			}
 			
 			var HisDB = new HistoryLookup("www.nthu.edu.tw");
@@ -125,6 +125,7 @@ function DNSLookup(){
 			var region = match.getRegion();
 			var ipChoice = new IPChoice( iplist , region );
 			ipChoice.countGrade();
+			return ipChoice.Grade;
 
 		}
 }

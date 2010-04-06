@@ -4,6 +4,8 @@ function IPChoice( ipListAll , region ) {
 	public:
 		this.ipListAll = ipListAll;
 		this.region = region;
+		var Grade = 0;
+		this.Grade = Grade;
 		ipListCanRandom = new ArrayList();
 
 		this.countGrade = countGrade;
@@ -17,7 +19,7 @@ function IPChoice( ipListAll , region ) {
 				var A = iplist.getA();
 				var B = iplist.getB();
 				var C = iplist.getC();
-				display(A+"&nbsp;"+B+"&nbsp;"+C);
+				//display(A+"&nbsp;"+B+"&nbsp;"+C);
 				if ( region < 7 )
 				{
 					G = A*(60-(region-1)*10) + 0.5*(B+C)*(40+(region-1)*10);
@@ -25,10 +27,14 @@ function IPChoice( ipListAll , region ) {
 					G = B*60.0 + C*40.0;
 				}
 				display("Grade:&nbsp;" + G );
+				//alert(G);
 				if(G >= 60.0){
-					display("Can:&nbsp;"+iplist.getIP());
+					//display("Can:&nbsp;"+iplist.getIP());
+					//alert("Can: "+iplist.getIP());
 					ipListCanRandom.add(iplist);
 				}
+				if ( G > this.Grade )
+					this.Grade = G;
 			}
 		}
 		
