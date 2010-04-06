@@ -12,7 +12,31 @@
 	<script type="text/javascript"  src="js/Response.js"></script>
 	<script type="text/javascript"  src="js/Response.js"></script>
 	<script type="text/javascript"  src="js/HistoryLookup.js"></script>
+	<embed type="application/x-dependdns" id="pluginId">
 	<script>
+		var tab_url;
+		var LoockUp = document.getElementById("pluginId");
+		var resolverList = new ArrayList();
+		var oneTimeCount = new Array;
+		// set resolver list
+		resolverList.add("168.95.1.1");
+		resolverList.add("168.95.192.1");
+		resolverList.add("139.175.55.244");
+		resolverList.add("139.175.252.16");
+		resolverList.add("139.175.150.20");
+		resolverList.add("139.175.10.20");
+		resolverList.add("203.187.0.6");
+		resolverList.add("203.133.1.8");
+		resolverList.add("211.78.130.1");
+		resolverList.add("211.78.130.2");
+		resolverList.add("61.56.211.185");
+		resolverList.add("211.78.215.200");
+		resolverList.add("211.78.215.137");
+		resolverList.add("210.200.211.193");
+		resolverList.add("210.200.211.225");
+		resolverList.add("203.79.224.10");
+		resolverList.add("203.79.224.30");
+
 		function display( str )
 		{
 			//alert(str);
@@ -31,10 +55,21 @@
 			},
 			run: function(tab) {
 				this.count++;
-				var domain = this.get_domain_from_url(tab.url);
-				var count_string = this.count + '';
+				this.domain = this.get_domain_from_url(tab.url);
+				var count_string;
+				var ResolveAns = new Array();
+				for ( var i = 0 ; i < resolverList.size() ; i++ ){
+					var Res = resolverList.get(i);
+					var tmp = LoockUp.SendQuery(this.domain,Res);
+					oneTimeCount.push(tmp.length);
+					ResolveAns.push(tmp);
+				}
+
 				var dnslookup = new DNSLookup();
-				count_string = dnslookup.dodebug()/10 + '';
+				dnslookup.setQuery(this.domain);
+				//dnslookup.setResolver(resolverList);
+				count_string = dnslookup.doLookup(ResolveAns,oneTimeCount)/10 + '';
+				//count_string = dnslookup.dodebug()/10 + '';
 				chrome.browserAction.setBadgeBackgroundColor( {color:[208, 0, 24, 255]} );
 				chrome.browserAction.setIcon({path: "icon/icon_22.png"});
 				this.badge(count_string,tab);
@@ -63,10 +98,22 @@
 		});
 
 
-		chrome.tabs.onUpdated.addListener(function(tabId, change, ttab) {
+		chrome.tabs.onUpdated.addListener(function(tabId, change, tab) {
 			// make sure the tab hasn't changed...
 			chrome.tabs.getSelected(null, function(tab) {
 				DepenDNS.run(tab);
+			});
+		});
+
+		// Message passing between background and popup
+		var port = chrome.extension.connect({name: "parse_url"});
+		chrome.extension.onConnect.addListener(function(port) {
+			console.assert(port.name == "parse_url");	
+			port.onMessage.addListener(function(msg) {
+				if ( msg.popup == "URL" ){
+					//alert(msg.popup);
+					port.postMessage({BackGround: DepenDNS.domain});
+				}
 			});
 		});
 

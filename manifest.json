@@ -17,6 +17,9 @@
       "permissions": [ "tabs" ],
       "run_at": "document_end"
    } ],
+  "plugins":[
+      {"path": "npapi/npdependdns.dll" , "public": true }
+  ],
   "icons": {
     	"128": "icon/icon_128.png"
   }

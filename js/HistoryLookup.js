@@ -8,6 +8,8 @@ function HistoryLookup( domainName ){
 		this.domainName = domainName;
 		try{
 			DB = window.openDatabase( "dependns", "1.1", "DepenDNS History Database",  1024*1024 );
+			if ( DB == null )
+				display("error!");
 
 		}catch(ex){
 			display('Could not create database: ' + ex.message);
@@ -22,6 +24,7 @@ function HistoryLookup( domainName ){
 			//mutex = true;
 			var sql = "SELECT id FROM domain_id WHERE domain_name='"+domainName+"';";
 			var result;
+			if ( DB != null ){
 			DB.readTransaction(function(tx){
 				tx.executeSql(
 					sql,
@@ -33,7 +36,7 @@ function HistoryLookup( domainName ){
 						getAnswerFromDB(result);
 					},
 					function(tx,err){
-						display("Err:"+err);
+						display("Err in getDomainID:"+err);
 					}	
 				);		
 			});
@@ -56,11 +59,12 @@ function HistoryLookup( domainName ){
 						mutex = false;
 					},
 					function(tx,err){
-						display("Err:"+err);
+						display("Err in getAnswerFromDB:"+err);
 						mutex = false;
 					});
 
 			});
+			}
 		}
 
 		this.doQuery = doQuery;
