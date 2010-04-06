@@ -44,8 +44,8 @@ function DNSLookup(){
 				//LoockUp.SendQuery(this.domain,Res);
 				
 			}*/
-			display(ResolveAns);
-			display(ResolveAns.length);
+			//display(ResolveAns);
+			//display(ResolveAns.length);
 			for ( var i = 0 ; i < ResolveAns.length ; i++ ){
 				var ResTmp = ResolveAns[i];
 				for ( var j = 0 ; j < ResTmp.length ; j++ ){
@@ -65,6 +65,7 @@ function DNSLookup(){
 			match.runMatchAlgorithm(resolverCount);
 			var ipChoice = new IPChoice( match.getIPListAll() , match.getRegion() );
 			ipChoice.countGrade();
+			display("Can Use IP List:"+ipChoice.getIPCanRandomList());
 			return ipChoice.Grade;
 		}
 

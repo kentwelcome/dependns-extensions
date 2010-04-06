@@ -29,7 +29,7 @@ function IPChoice( ipListAll , region ) {
 				display("Grade:&nbsp;" + G );
 				//alert(G);
 				if(G >= 60.0){
-					//display("Can:&nbsp;"+iplist.getIP());
+					//display("Can use:&nbsp;"+iplist.getIP());
 					//alert("Can: "+iplist.getIP());
 					ipListCanRandom.add(iplist);
 				}
