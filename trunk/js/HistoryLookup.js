@@ -2,53 +2,62 @@ function HistoryLookup( domainName ){
 	private:
 		var historyList = new ArrayList();
 		var DB;
+		var DB2;
 	public:
+		var mutex;
 		this.domainName = domainName;
 		try{
-			DB = window.openDatabase("dependns", "1.1", "DepenDNS History Database",  1024 * 1024);
+			DB = window.openDatabase( "dependns", "1.1", "DepenDNS History Database",  1024*1024 );
 
 		}catch(ex){
 			display('Could not create database: ' + ex.message);
 		}
+		
+		//var temp_sql = //DB.SQLTransactionSync() ;	
+		//display(temp_sql);
+		//temp_sql.executeSql("SELECT id FROM domain_id WHERE domain_name='www.google.com';");
 
 		this.getDomainID = getDomainID;
 		function getDomainID(){
+			//mutex = true;
 			var sql = "SELECT id FROM domain_id WHERE domain_name='"+domainName+"';";
 			var result;
-			DB.transaction(function(tx){
+			DB.readTransaction(function(tx){
 				tx.executeSql(
 					sql,
 					[],
 					function(tx,rs){
-						//var i = rs.length;
-						//display(i);
 						var Row = rs.rows.item(0);
 						result = Row["id"];	
 						//display(result);
+						getAnswerFromDB(result);
 					},
 					function(tx,err){
 						display("Err:"+err);
 					}	
 				);		
 			});
-
 			return result;
 		}
 
 		this.getAnswerFromDB = getAnswerFromDB;
-		function getAnswerFromDB(){
-			var id = getDomainID();
-			//display(id);
-			var sql = "SELECT * FROM domain_'"+id+"';";
-			DB.transaction(function(tx){
+		function getAnswerFromDB(id){
+			//var id = getDomainID();
+			//id = 3;
+			var sql = "SELECT * FROM domain_"+id+";";
+			DB.readTransaction(function(tx){
 				tx.executeSql(
 					sql,
 					[],
 					function(tx,rs){
 						doQuery(tx,rs);
+						//var tmp = rs.length ;
+						//display( id + ":" + rs.rows.length );
+						mutex = false;
 					},
 					function(tx,err){
 						display("Err:"+err);
+						mutex = false;
 					});
 
 			});
@@ -56,7 +65,7 @@ function HistoryLookup( domainName ){
 
 		this.doQuery = doQuery;
 		function doQuery( tx , rs ){
-			for( var i = 0 ; i < rs.length ; i++ ){
+			for( var i = 0 ; i < rs.rows.length ; i++ ){
 				var Row = rs.rows.item(i);
 				var ip = Row["ip"];
 				var bClass = getBClass(ip);
@@ -92,6 +101,8 @@ function HistoryLookup( domainName ){
 		
 		this.run = run;
 		function run(){
-			getAnswerFromDB();
+			mutex = false;
+			getDomainID();
+			//while ( mutex == true);
 		}
 }
