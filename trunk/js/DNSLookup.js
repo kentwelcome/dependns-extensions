@@ -10,6 +10,7 @@ function DNSLookup(){
 		var historyThread;
 		var answerList = new ArrayList();
 		var response = new Response();
+		//var OneTimeCount = new Array();
 	public:
 		domainName = "www.google.com.tw";
 		//type = Type.A;
@@ -26,7 +27,7 @@ function DNSLookup(){
 		this.setResolver = setResolver;
 		function setResolver( resolverList ){
 			//this.sr = sr;
-			this.resolverList = resolverList;
+			//this.resolverList = resolverList;
 			resolverCount = resolverList.size();
 			setResultInfo("The Number of Resolvers:"+resolverCount);
 		}
@@ -46,6 +47,7 @@ function DNSLookup(){
 			}*/
 			//display(ResolveAns);
 			//display(ResolveAns.length);
+			OneTimeCount = oneTimeCount;
 			for ( var i = 0 ; i < ResolveAns.length ; i++ ){
 				var ResTmp = ResolveAns[i];
 				for ( var j = 0 ; j < ResTmp.length ; j++ ){
@@ -60,13 +62,48 @@ function DNSLookup(){
 			//¾ã²zResponse
 			orderResponse();
 
-			var mode_OneTimeCount = 1;//= checkOneTimeCount();
+			var mode_OneTimeCount = checkOneTimeCount();
+			//display(mode_OneTimeCount);
 			var match = new Match( answerList , historyList , mode_OneTimeCount );
 			match.runMatchAlgorithm(resolverCount);
 			var ipChoice = new IPChoice( match.getIPListAll() , match.getRegion() );
 			ipChoice.countGrade();
 			display("Can Use IP List:"+ipChoice.getIPCanRandomList());
-			return ipChoice.Grade;
+			return Math.round(ipChoice.Grade);
+		}
+
+		this.checkOneTimeCount = checkOneTimeCount;
+		function checkOneTimeCount(){
+			var countList = new Array(10);
+			for ( var i = 0 ; i < 10 ; i++ ){
+				ConTmp = new Array(2);
+				ConTmp[0] = 0;
+				ConTmp[1] = 0;
+				countList[i] = ConTmp;
+			}
+			var mode = 0;
+			var modeIndex = 0;
+			var arraySize = 0;
+			
+			for ( var i = 0 ; i < resolverCount ; i++ ){
+				var exist = false;
+				for ( var j = 0 ; j < arraySize ; j++ ){
+					var ConTmp = countList[j];
+					if (ConTmp[0] == OneTimeCount[i]){
+						ConTmp[1]++;
+						exist = true;
+					}
+				}
+				if (!exist){
+					var ConTmp = countList[arraySize];
+					ConTmp[0] = OneTimeCount[i];
+					ConTmp[1] = 1;
+					//display(countList[arraySize]);
+					arraySize++;
+				}
+			}
+			var ConTmp = countList[modeIndex];
+			return ConTmp[0];
 		}
 
 		this.orderResponse = orderResponse;

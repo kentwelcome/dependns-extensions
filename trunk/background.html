@@ -54,9 +54,7 @@
 				return  url.match(/:\/\/(.[^/]+)/)[1]
 			},
 			run: function(tab) {
-				this.count++;
 				this.domain = this.get_domain_from_url(tab.url);
-				var count_string;
 				var ResolveAns = new Array();
 				for ( var i = 0 ; i < resolverList.size() ; i++ ){
 					var Res = resolverList.get(i);
@@ -67,9 +65,10 @@
 
 				var dnslookup = new DNSLookup();
 				dnslookup.setQuery(this.domain);
-				//dnslookup.setResolver(resolverList);
-				count_string = dnslookup.doLookup(ResolveAns,oneTimeCount)/10 + '';
-				//count_string = dnslookup.dodebug()/10 + '';
+				dnslookup.setResolver(resolverList);
+				var count_string = 0;
+				count_string = dnslookup.doLookup(ResolveAns,oneTimeCount);
+				count_string = count_string/10 + '';
 				chrome.browserAction.setBadgeBackgroundColor( {color:[208, 0, 24, 255]} );
 				chrome.browserAction.setIcon({path: "icon/icon_22.png"});
 				this.badge(count_string,tab);
