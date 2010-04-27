@@ -90,7 +90,7 @@
 		}
 
 
-		var db;
+		var HisDB = new HistoryLookup();
                 //var result = new SQLResultSet();
 		/*function websql(){
 			private:
@@ -144,6 +144,9 @@
 			var  dnslookup = new DNSLookup();
 			dnslookup.setQuery(domain);
 			dnslookup.setResolver(resolverList);
+			HisDB.setDomainName(domain);
+			HisDB.run(domain);
+			
 			var G = dnslookup.doLookup(ResolveAns,oneTimeCount);
 			display(G);
 
@@ -156,40 +159,6 @@
 
 		var resolvecount = 17;
 		init();
-		//var IP = new ArrayList();
-		//var myURL = get_domain_from_url(document.URL);
-		//display(myURL);
-		//display(LoockUp.SendLocal(domain));
-		//IP.add('140.114.63.1');
-		//IP.add('140.114.64.1');
-		//for ( var i = 0 ; i < IP.size() ; i++ )
-		//	display( IP.get(i) );
-          	//var d = new websql();
-		//d.getDomainID("www.yahoo.com");
-		/*var AnsList = new Answer( "140.114" , "140.114.63.1");
-		for( var i = 0 ; i < resolvecount-1 ; i++ )
-			AnsList.addIP("140.114.63.1");
-		//var AnsList2 = new Answer( "140.114" , "140.114.63.1"); 
-		var HisList = new Answer( "140.114" , "140.114.63.1");
-		for( var i = 0 ; i < 5667 -1 ; i++ )
-			HisList.addIP("140.114.63.1");
-		var Ans = new ArrayList();
-		var His = new ArrayList();
-		Ans.add(AnsList);
-		//Ans.add(AnsList2);
-		His.add(HisList);
-		var AnsIpList = AnsList.ipList.get(0);
-		//display(Ans.size());
-		var match = new Match( Ans , His , 1 );
-		match.runMatchAlgorithm(resolvecount);
-		var iplist = match.getIPListAll();
-		var region = match.getRegion();
-		var ipChoice = new IPChoice( iplist , region );
-		ipChoice.countGrade();
-		//var SQL = new websql();
-		//SQL.getDomainID();
-		var dnslookup = new DNSLookup();
-		dnslookup.dodebug();*/
 
 	</script>
 
