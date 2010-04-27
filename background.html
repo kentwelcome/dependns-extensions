@@ -18,6 +18,7 @@
 		var LoockUp = document.getElementById("pluginId");
 		var resolverList = new ArrayList();
 		var oneTimeCount = new Array;
+		var HisDB = new HistoryLookup();
 		// set resolver list
 		resolverList.add("168.95.1.1");
 		resolverList.add("168.95.192.1");
@@ -66,6 +67,8 @@
 				var dnslookup = new DNSLookup();
 				dnslookup.setQuery(this.domain);
 				dnslookup.setResolver(resolverList);
+				//HisDB.setDomainName(this.domain);
+				//HisDB.run(this.domain);
 				var count_string = 0;
 				count_string = dnslookup.doLookup(ResolveAns,oneTimeCount);
 				count_string = count_string/10 + '';

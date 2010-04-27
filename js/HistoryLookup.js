@@ -5,7 +5,8 @@ function HistoryLookup( domainName ){
 		var DB2;
 	public:
 		var mutex;
-		this.domainName = domainName;
+		var DomainName;
+		//this.domainName = domainName;
 		try{
 			DB = window.openDatabase( "dependns", "1.1", "DepenDNS History Database",  1024*1024 );
 			if ( DB == null )
@@ -22,7 +23,7 @@ function HistoryLookup( domainName ){
 		this.getDomainID = getDomainID;
 		function getDomainID(){
 			//mutex = true;
-			var sql = "SELECT id FROM domain_id WHERE domain_name='"+domainName+"';";
+			var sql = "SELECT id FROM domain_id WHERE domain_name='"+DomainName+"';";
 			var result;
 			if ( DB != null ){
 			DB.readTransaction(function(tx){
@@ -30,13 +31,38 @@ function HistoryLookup( domainName ){
 					sql,
 					[],
 					function(tx,rs){
-						var Row = rs.rows.item(0);
-						result = Row["id"];	
-						//display(result);
-						getAnswerFromDB(result);
+						if (rs.rows.length != 0){
+							var Row = rs.rows.item(0);
+							result = Row["id"];	
+							//display("domain:"+DomainName+" id:"+result);
+							getAnswerFromDB(result);
+						} else {
+							var insert_sql = "INSERT INTO domain_id (id,domain_name)VALUES(NULL,'"+DomainName+"');";
+							//display("add name:"+DomainName);
+							DB.transaction( function(TX){
+								TX.executeSql(insert_sql,
+									[],
+									function(TX,rs1){
+									},
+									function(TX,err1){
+									}
+								);}
+							);
+						}
 					},
 					function(tx,err){
 						display("Err in getDomainID:"+err);
+						
+						/*DB.readTransaction(function(TX){
+								TX.executeSql(
+										insert_sql,
+										[],
+										function(TX,RS){	// result
+										},
+										function(TX,RS){	// error
+										}
+									);
+							});*/
 					}	
 				);		
 			});
@@ -60,6 +86,16 @@ function HistoryLookup( domainName ){
 					},
 					function(tx,err){
 						display("Err in getAnswerFromDB:"+err);
+						var create_sql = "CREATE TABLE domain_"+id+" (`id` INTEGER PRIMARY KEY , `ip` TEXT );";
+						DB.transaction( function(TX){
+							TX.executeSql(create_sql,
+								[],
+								function(TX,rs1){
+								},
+								function(TX,err1){
+								}
+							);}
+						);
 						mutex = false;
 					});
 
@@ -86,6 +122,10 @@ function HistoryLookup( domainName ){
 			}
 		}
 
+		//function CreateTable(){
+		
+		//}
+
 		this.getBClass = getBClass;
 		function getBClass( ip ){
 			var dotCount = 0;
@@ -102,9 +142,17 @@ function HistoryLookup( domainName ){
 		function getHistoryList(){
 			return historyList;
 		}
+
+		this.setDomainName = setDomainName;
+		function setDomainName( domain ){
+			DomainName = domain;
+			//display(DomainName);
+		}
 		
 		this.run = run;
-		function run(){
+		function run( input ){
+			DomainName = input;
+			//display("run DB~"+DomainName);
 			mutex = false;
 			getDomainID();
 			//while ( mutex == true);
