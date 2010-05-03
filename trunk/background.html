@@ -72,6 +72,7 @@
 				var count_string = 0;
 				count_string = dnslookup.doLookup(ResolveAns,oneTimeCount);
 				count_string = count_string/10 + '';
+				delete dnslookup;
 				chrome.browserAction.setBadgeBackgroundColor( {color:[208, 0, 24, 255]} );
 				chrome.browserAction.setIcon({path: "icon/icon_22.png"});
 				this.badge(count_string,tab);
