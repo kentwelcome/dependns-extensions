@@ -69,7 +69,11 @@ function DNSLookup(){
 			var ipChoice = new IPChoice( match.getIPListAll() , match.getRegion() );
 			ipChoice.countGrade();
 			display("Can Use IP List:"+ipChoice.getIPCanRandomList());
-			return Math.round(ipChoice.Grade);
+			var grade = ipChoice.Grade;
+			delete historyList;
+			delete ipChoice;
+			delete match;
+			return Math.round(grade);
 		}
 
 		this.checkOneTimeCount = checkOneTimeCount;

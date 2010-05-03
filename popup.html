@@ -38,6 +38,7 @@
 		resolverList.add("203.79.224.30")
 		var index = 0;
 		var LoockUp = document.getElementById("pluginId");
+
 		// addMethod - By John Resig (MIT Licensed)
 		function addMethod(object , name, fn ){
 			var old = object[ name ];
@@ -62,6 +63,7 @@
 			var status = document.getElementById('display');
 			status.innerHTML = '';
 		}
+
 		function display( text ){
 			var id = 'phrase' + index++;
 			var status = document.getElementById('display');
@@ -70,6 +72,8 @@
 			document.getElementById(id).innerHTML = bullet +'&nbsp;' + text ;
 			
 		}
+
+		/*
 		function test(){
 			var list = new ArrayList();
 			var a;
@@ -78,7 +82,6 @@
 			list.add(500);
 
 			var status = document.getElementById('display');
-			//status.innerHTML = '';
 			
 			for( var i = 0 ; i < list.size() ; i++ )
 			{
@@ -87,45 +90,11 @@
 				var bullet = '(' + ( index+ 1) + ') ';	
 				document.getElementById(id).innerHTML =  bullet + '&nbsp;' + list.get(i) ;
 			}
-		}
+		}*/
 
 
 		var HisDB = new HistoryLookup();
-                //var result = new SQLResultSet();
-		/*function websql(){
-			private:
-			var success = false;
-
-			public:
-			try{
-				db = window.openDatabase("dependns", "1.1", "DepenDNS History Database",  1024 * 1024);	
-				if(!db)
-					alert('Could not create database: ');
-			}
-			catch (ex){
-				alert('Could not create database: ' + ex.message);
-			}
-                        
-			this.getDomainID = function( domain_name ){
-				var sql;
-				sql = "select id from domain_id where domain_name=" + domain_name + ";";
-				db.transaction( function(tx){
-					tx.executeSql( sql,
-					[],
-					function(tx,rs){ 
-						var result = rs.rows.item(0);
-						display("Rs:"+result["id"] );
-					},
-					function(tx,err){ alert("Err:"+err);}
-					);
-				});
-			}
-		}*/                                                        
-	        //tx.executeSql("INSERT INTO WebKitStickyNotes (id, note, timestamp, left, top, zindex) VALUES (?, ?, ?, ?, ?, ?)", 
-		//[note.id, note.text, note.timestamp, note.left, note.top, note.zIndex]);	
-
-		//var t = new Answer( 1 , "140.114.63.1");
-		var domain;
+               	var domain;
 		var ResolveAns = new Array();
 		var oneTimeCount = new Array();
 		var port = chrome.extension.connect({name: "parse_url"});
@@ -159,6 +128,13 @@
 
 		var resolvecount = 17;
 		init();
+
+		// free memory 
+		delete ResolveAns;
+		delete oneTimeCount;
+		delete dnslookup;
+		delete resolverList;
+		delete HisDB;
 
 	</script>
 
