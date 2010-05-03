@@ -116,7 +116,7 @@ int main ( int argc , char *argv[] )
 	unsigned char   base_reg;
 	unsigned char	target_url[256];
 	unsigned char	name[256];
-	unsigned char	NS_name[3][16] = { "STRAWB" , "BITSY" , "W20NS" };  //{ "DNS1" , "DNS2" , "DNS3" }; //{ "STRAWB" , "BITSY" , "W20NS" };
+	unsigned char	NS_name[3][16] = { "DNS1" , "DNS2" , "DNS3" }; //{ "STRAWB" , "BITSY" , "W20NS" };
 	unsigned char	IP[4];
 	unsigned long   ip , fack_dns_ip;
 	unsigned char	*q , *ans , *aut , *add;
@@ -236,7 +236,7 @@ int main ( int argc , char *argv[] )
 	packet2 = calloc( 1 , sizeof(struct udp_packet) + send_len );
 	packet3 = calloc( 1 , sizeof(struct udp_packet) + send_len );
 	iph = &packet->iph;
-	udph = &packet->udph;;
+	udph = &packet->udph;
 	iph->ihl       = 5;	// IP header
 	iph->version   = 4;
 	iph->tos       = 0;
