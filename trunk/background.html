@@ -17,7 +17,6 @@
 		var tab_url;
 		var LoockUp = document.getElementById("pluginId");
 		var resolverList = new ArrayList();
-		var oneTimeCount = new Array;
 		var HisDB = new HistoryLookup();
 		// set resolver list
 		resolverList.add("168.95.1.1");
@@ -57,6 +56,8 @@
 			run: function(tab) {
 				this.domain = this.get_domain_from_url(tab.url);
 				var ResolveAns = new Array();
+				var oneTimeCount = new Array;
+		
 				for ( var i = 0 ; i < resolverList.size() ; i++ ){
 					var Res = resolverList.get(i);
 					var tmp = LoockUp.SendQuery(this.domain,Res);
@@ -68,11 +69,16 @@
 				dnslookup.setQuery(this.domain);
 				dnslookup.setResolver(resolverList);
 				//HisDB.setDomainName(this.domain);
-				//HisDB.run(this.domain);
+				HisDB.setResolveAnswer(ResolveAns);
+				HisDB.run(this.domain);
 				var count_string = 0;
 				count_string = dnslookup.doLookup(ResolveAns,oneTimeCount);
 				count_string = count_string/10 + '';
+
 				delete dnslookup;
+				delete ResolveAns;
+				delete oneTimeCount;
+
 				chrome.browserAction.setBadgeBackgroundColor( {color:[208, 0, 24, 255]} );
 				chrome.browserAction.setIcon({path: "icon/icon_22.png"});
 				this.badge(count_string,tab);

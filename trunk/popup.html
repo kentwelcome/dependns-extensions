@@ -93,10 +93,11 @@
 		}*/
 
 
-		var HisDB = new HistoryLookup();
+		
                	var domain;
 		var ResolveAns = new Array();
 		var oneTimeCount = new Array();
+		var HisDB = new HistoryLookup();
 		var port = chrome.extension.connect({name: "parse_url"});
 		port.postMessage({popup: "URL"});
 		port.onMessage.addListener( function(msg){
@@ -114,6 +115,7 @@
 			dnslookup.setQuery(domain);
 			dnslookup.setResolver(resolverList);
 			HisDB.setDomainName(domain);
+			HisDB.setResolveAnswer(ResolveAns);
 			HisDB.run(domain);
 			
 			var G = dnslookup.doLookup(ResolveAns,oneTimeCount);
