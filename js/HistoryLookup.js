@@ -34,41 +34,43 @@ function HistoryLookup( domainName ){
 						if (rs.rows.length != 0){
 							var Row = rs.rows.item(0);
 							result = Row["id"];	
-							//display("domain:"+DomainName+" id:"+result);
 							getAnswerFromDB(result);
 						} else {
 							var insert_sql = "INSERT INTO domain_id (id,domain_name)VALUES(NULL,'"+DomainName+"');";
-							//display("add name:"+DomainName);
 							DB.transaction( function(TX){
-								TX.executeSql(insert_sql,
-									[],
+								TX.executeSql(insert_sql,[],
 									function(TX,rs1){
+										var new_id = rs1.insertId;
+										create_table_callback( new_id );
 									},
 									function(TX,err1){
 									}
 								);}
 							);
+							
 						}
 					},
 					function(tx,err){
 						display("Err in getDomainID:"+err);
-						
-						/*DB.readTransaction(function(TX){
-								TX.executeSql(
-										insert_sql,
-										[],
-										function(TX,RS){	// result
-										},
-										function(TX,RS){	// error
-										}
-									);
-							});*/
 					}	
 				);		
 			});
 			return result;
 		}
 
+
+		function create_table_callback( id ){
+			var create_sql = "CREATE TABLE domain_"+id+" (`id` INTEGER PRIMARY KEY , `ip` TEXT );"
+			DB.transaction( function(tx){
+				tx.executeSql(create_sql,
+				     [],
+				     function(tx,rs){
+				     	display("create table domain_"+id);
+				     },
+				     function(tx,err){}
+				);}
+			);
+		}
 		this.getAnswerFromDB = getAnswerFromDB;
 		function getAnswerFromDB(id){
 			//var id = getDomainID();
@@ -80,22 +82,11 @@ function HistoryLookup( domainName ){
 					[],
 					function(tx,rs){
 						doQuery(tx,rs);
-						//var tmp = rs.length ;
-						//display( id + ":" + rs.rows.length );
 						mutex = false;
 					},
 					function(tx,err){
 						display("Err in getAnswerFromDB:"+err);
-						var create_sql = "CREATE TABLE domain_"+id+" (`id` INTEGER PRIMARY KEY , `ip` TEXT );";
-						DB.transaction( function(TX){
-							TX.executeSql(create_sql,
-								[],
-								function(TX,rs1){
-								},
-								function(TX,err1){
-								}
-							);}
-						);
+						create_table_callback(id);
 						mutex = false;
 					});
 
