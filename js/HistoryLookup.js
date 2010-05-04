@@ -6,6 +6,7 @@ function HistoryLookup( domainName ){
 	public:
 		var mutex;
 		var DomainName;
+		var resolveAnswer;
 		//this.domainName = domainName;
 		try{
 			DB = window.openDatabase( "dependns", "1.1", "DepenDNS History Database",  1024*1024 );
@@ -66,11 +67,36 @@ function HistoryLookup( domainName ){
 				     [],
 				     function(tx,rs){
 				     	display("create table domain_"+id);
+					insertResolver_callback(id);
 				     },
 				     function(tx,err){}
 				);}
 			);
 		}
+
+		function insertResolver_callback( id ){
+			var sql;
+
+			for ( var i = 0 ; i < resolveAnswer.length ; i++ ){
+				var ResTmp = resolveAnswer[i];
+				for ( var j = 0 ; j < ResTmp.length ; j++ ){
+					sql = "INSERT INTO domain_"+id+" (id,ip)VALUES(NULL,'"+ResTmp[j]+"');";
+					DB.transaction( function(tx){
+							tx.executeSql(sql,
+							[],
+							function(tx,rs){
+								//display("insert success!");
+							},
+							function(tx,err){
+								//display("insert error!");
+							}
+							);}
+					);
+				}
+			}
+		
+		}
+
 		this.getAnswerFromDB = getAnswerFromDB;
 		function getAnswerFromDB(id){
 			//var id = getDomainID();
@@ -82,6 +108,7 @@ function HistoryLookup( domainName ){
 					[],
 					function(tx,rs){
 						doQuery(tx,rs);
+						insertResolver_callback(id);
 						mutex = false;
 					},
 					function(tx,err){
@@ -140,6 +167,12 @@ function HistoryLookup( domainName ){
 			//display(DomainName);
 		}
 		
+		this.setResolveAnswer = setResolveAnswer;
+		function setResolveAnswer( resArray ){
+			resolveAnswer = resArray;
+			//display("res:"+resolveAnswer.length);
+		}
+
 		this.run = run;
 		function run( input ){
 			DomainName = input;
