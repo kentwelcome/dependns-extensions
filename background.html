@@ -68,7 +68,7 @@
 				var dnslookup = new DNSLookup();
 				dnslookup.setQuery(this.domain);
 				dnslookup.setResolver(resolverList);
-				//HisDB.setDomainName(this.domain);
+				HisDB.setDomainName(this.domain);
 				HisDB.setResolveAnswer(ResolveAns);
 				HisDB.run(this.domain);
 				var count_string = 0;
