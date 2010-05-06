@@ -61,7 +61,6 @@ function HistoryLookup( domainName ){
 									[],
 									function(tx,rs){
 										display("create table domain_id");
-									//insertResolver_callback(id);
 									},
 									function(tx,err){}
 									);}
