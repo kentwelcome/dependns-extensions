@@ -37,6 +37,7 @@ function HistoryLookup( domainName ){
 							result = Row["id"];	
 							getAnswerFromDB(result);
 						} else {
+							display("insert:"+DomainName);
 							var insert_sql = "INSERT INTO domain_id (id,domain_name)VALUES(NULL,'"+DomainName+"');";
 							DB.transaction( function(TX){
 								TX.executeSql(insert_sql,[],
@@ -45,6 +46,7 @@ function HistoryLookup( domainName ){
 										create_table_callback( new_id );
 									},
 									function(TX,err1){
+										display("no domain_id table");
 									}
 								);}
 							);
@@ -53,6 +55,17 @@ function HistoryLookup( domainName ){
 					},
 					function(tx,err){
 						display("Err in getDomainID:"+err);
+						var create_sql = "CREATE TABLE domain_id (`id` INTEGER PRIMARY KEY , `domain_name` TEXT );"
+						DB.transaction( function(tx){
+								tx.executeSql(create_sql,
+									[],
+									function(tx,rs){
+										display("create table domain_id");
+									//insertResolver_callback(id);
+									},
+									function(tx,err){}
+									);}
+							      );
 					}	
 				);		
 			});
