@@ -51,10 +51,12 @@
 				
 			},
 			get_domain_from_url: function(url) {
-				return  url.match(/:\/\/(.[^/]+)/)[1]
+				return  url.match(/http:\/\/(.[^/]+)/)[1]
 			},
 			run: function(tab) {
 				this.domain = this.get_domain_from_url(tab.url);
+				if ( this.domain == null )
+					return false;
 				var ResolveAns = new Array();
 				var oneTimeCount = new Array;
 		
