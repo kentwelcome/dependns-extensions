@@ -7,9 +7,12 @@ function HistoryLookup( domainName ){
 		var mutex;
 		var DomainName;
 		var resolveAnswer;
+		var dolookup;
+		var oneTimeCount;
 		//this.domainName = domainName;
 		try{
 			DB = window.openDatabase( "dependns", "1.1", "DepenDNS History Database",  1024*1024 );
+			//DB = window.openDatabaseSync( "dependns", "1.1", "DepenDNS History Database",  1024*1024 );
 			if ( DB == null )
 				display("error!");
 
@@ -152,9 +155,6 @@ function HistoryLookup( domainName ){
 			}
 		}
 
-		//function CreateTable(){
-		
-		//}
 
 		this.getBClass = getBClass;
 		function getBClass( ip ){
@@ -183,6 +183,12 @@ function HistoryLookup( domainName ){
 		function setResolveAnswer( resArray ){
 			resolveAnswer = resArray;
 			//display("res:"+resolveAnswer.length);
+		}
+
+		this.setDnslookup = setDnslookup;
+		function setDnslookup( lookup_function , onetimecount ){
+			dolookup = lookup_function;
+			oneTimeCount = onetimecount;
 		}
 
 		this.run = run;

@@ -102,6 +102,8 @@
 		port.postMessage({popup: "URL"});
 		port.onMessage.addListener( function(msg){
 			domain = msg.BackGround;
+			if (domain == null)
+				exit(0);
 			for ( var i = 0 ; i < resolverList.size() ; i++ ){
 				var Res = resolverList.get(i);
 				var tmp = LoockUp.SendQuery(domain,Res);
@@ -117,8 +119,9 @@
 			HisDB.setDomainName(domain);
 			HisDB.setResolveAnswer(ResolveAns);
 			HisDB.run(domain);
+			var His = HisDB.getHistoryList();
 			
-			var G = dnslookup.doLookup(ResolveAns,oneTimeCount);
+			var G = dnslookup.doLookup(ResolveAns,oneTimeCount,His);
 			display(G);
 
 		});

@@ -33,7 +33,7 @@ function DNSLookup(){
 		}
 
 		this.doLookup = doLookup;
-		function doLookup(ResolveAns,oneTimeCount){
+		function doLookup(ResolveAns,oneTimeCount,historyList){
 
 			// Lookup by resolver
 			/*for( var i = 0 ; i < resolverCount ; i++ )
@@ -58,7 +58,7 @@ function DNSLookup(){
 
 
 			// run History thread
-			var historyList = new ArrayList();
+			//var historyList = new ArrayList();
 			//¾ã²zResponse
 			orderResponse();
 
