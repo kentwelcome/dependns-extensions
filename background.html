@@ -51,7 +51,11 @@
 				
 			},
 			get_domain_from_url: function(url) {
-				return  url.match(/http:\/\/(.[^/]+)/)[1]
+				var Reg = url.match(/http:\/\/(.[^/]+)/);
+				if ( Reg != null )
+					return  url.match(/http:\/\/(.[^/]+)/)[1]
+				else 
+					return null;
 			},
 			run: function(tab) {
 				this.domain = this.get_domain_from_url(tab.url);
@@ -74,7 +78,8 @@
 				HisDB.setResolveAnswer(ResolveAns);
 				HisDB.run(this.domain);
 				var count_string = 0;
-				count_string = dnslookup.doLookup(ResolveAns,oneTimeCount);
+				var His = HisDB.getHistoryList();
+				count_string = dnslookup.doLookup(ResolveAns,oneTimeCount,His);
 				count_string = count_string/10 + '';
 
 				delete dnslookup;
