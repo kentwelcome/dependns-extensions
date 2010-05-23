@@ -154,33 +154,6 @@
 			catch (ex){
 				alert('Could not create database: ' + ex.message);
 			}
-
-			// execute sql
-			/*db.transaction(function(tx) 
-			{    
-				tx.executeSql('', 
-				[ selectedCategory ], 
-				function (tx, rs) { displayMyResult(rs); }, 
-				function (tx, err) { displayMyError(err); } );
-			});*/
-			/*if (window.google && google.gears) {
-
-				try {
-					db = google.gears.factory.create('beta.database');
-					if (db) {
-						db.open('database-DepenDNS');
-						db.execute('create table if not exists DepenDNS' +
-						' (Phrase varchar(255), Timestamp int)');
-
-						success = true;
-						// Initialize the UI at startup.
-						displayRecentPhrases();
-					}
-				}
-				catch (ex) {
-					alert('Could not create database: ' + ex.message);
-				}
-			}*/
 		};
 
 		
