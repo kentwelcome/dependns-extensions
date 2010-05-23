@@ -124,6 +124,7 @@ function HistoryLookup( domainName ){
 					function(tx,rs){
 						doQuery(tx,rs);
 						insertResolver_callback(id);
+						//var grade = dolookup(resolveAnswer,oneTimeCount,historyList),
 						mutex = false;
 					},
 					function(tx,err){
