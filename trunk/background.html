@@ -15,7 +15,7 @@
 	<embed type="application/x-dependdns" id="pluginId">
 	<script>
 		var tab_url;
-		var LoockUp = document.getElementById("pluginId");
+		//var LoockUp = document.getElementById("pluginId");
 		var resolverList = new ArrayList();
 		var HisDB = new HistoryLookup();
 		// set resolver list
@@ -58,6 +58,7 @@
 					return null;
 			},
 			run: function(tab) {
+/*
 				this.domain = this.get_domain_from_url(tab.url);
 				if ( this.domain == null )
 					return false;
@@ -80,12 +81,11 @@
 				var count_string = 0;
 				var His = HisDB.getHistoryList();
 				count_string = dnslookup.doLookup(ResolveAns,oneTimeCount,His);
-				count_string = count_string/10 + '';
-
+				count_string = count_string/10 + '';*/
+				count_string = '10';
 				delete dnslookup;
 				delete ResolveAns;
 				delete oneTimeCount;
-
 				chrome.browserAction.setBadgeBackgroundColor( {color:[208, 0, 24, 255]} );
 				chrome.browserAction.setIcon({path: "icon/icon_22.png"});
 				this.badge(count_string,tab);
