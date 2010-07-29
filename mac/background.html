@@ -1,0 +1,114 @@
+<html>
+<!--<script type="text/javascript"  src="js/gears_init.js"></script> -->
+<script type="text/javascript"  src="js/Match.js"></script>
+<script type="text/javascript"  src="js/ArrayList.js"></script>
+<script type="text/javascript"  src="js/Integer.js"></script>
+<script type="text/javascript"  src="js/String.js"></script>
+<script type="text/javascript"  src="js/Answer.js"></script>
+<script type="text/javascript"  src="js/AnswerIP.js"></script>
+<script type="text/javascript"  src="js/Match.js"></script>
+<script type="text/javascript"  src="js/IPChoice.js"></script>
+<script type="text/javascript"  src="js/DNSLookup.js"></script>
+<script type="text/javascript"  src="js/Response.js"></script>
+<script type="text/javascript"  src="js/Response.js"></script>
+<script type="text/javascript"  src="js/HistoryLookup.js"></script>
+<script>
+var tab_url;
+
+function DepenDNS() {
+	var ips;
+	var count;
+	this.ips = [];
+	this.count = 0;
+	var count_string = "";
+	var CenterServer = "http://is10.cs.nthu.edu.tw/~kent/post.php";
+	
+	this.GetDomainURL = GetDomainURL;
+	function GetDomainURL ( URL )
+	{
+		var Reg = URL.match(/http:\/\/(.[^\/]+)/);
+		if ( Reg != null ){
+			return URL.match(/http:\/\/(.[^\/]+)/);
+		} else {
+			return null;
+		}
+	}
+	
+	this.Run = Run;
+	function Run(tab) 
+	{
+		this.domain = this.GetDomainURL(tab.url);
+		// not legal URL
+		if ( this.domain == null ){
+			return false;
+		}
+		var xmlHttp = new XMLHttpRequest();
+		// The browser does not support xmlHttpRequest
+		if ( !xmlHttp ){
+			count_string = "No";
+			chrome.browserAction.setBadgeBackgroundColor( {color:[208, 0, 24, 255]} );
+			chrome.browserAction.setIcon({path: "icon/icon_22.png"});
+			this.Badge(count_string,tab);
+			return false;
+		}
+		var params = "ASK_URL="+this.domain+"&User=kent&Passwd=1234";
+		xmlHttp.open( 'POST' , CenterServer , true );
+		xmlHttp.onreadystatechange = function () {
+			alert( xmlHttp.responseText );
+		}
+		xmlHttp.send(params);
+		chrome.browserAction.setBadgeBackgroundColor( {color:[208, 0, 24, 255]} );
+		chrome.browserAction.setIcon({path: "icon/icon_22.png"});
+		this.Badge(count_string,tab);
+	}
+
+	this.Badge = Badge;
+	function Badge( text , tab ) 
+	{
+		var obj = new Object();
+		obj.text = text;
+		obj.tabId = tab.id;
+		chrome.browserAction.setBadgeText(obj);
+	}
+
+}
+
+var DepenDNS = new DepenDNS();
+
+// Setup chrome action listener 
+chrome.tabs.onSelectionChanged.addListener(function(tabid,selectedInfo){
+		chrome.tabs.get(tabid,function(tab) {
+			DepenDNS.Run(tab);
+			});
+		});
+
+chrome.windows.onFocusChanged.addListener(function(windowId) {
+		chrome.tabs.getSelected(windowId, function(tab) {
+			DepenDNS.Run(tab);
+			});
+		});
+
+chrome.tabs.onUpdated.addListener(function(tabId, change, tab) {
+		// make sure the tab hasn't changed...
+		chrome.tabs.getSelected(null, function(tab) {
+			DepenDNS.Run(tab);
+			});
+		});
+
+// Message passing between background and popup
+var port = chrome.extension.connect({ name: "parse_url"} );
+chrome.extension.onConnect.addListener( function(port) {
+		console.assert(port.name == "parse_url");	
+		port.onMessage.addListener(function(msg) {
+			if ( msg.popup == "URL" ){
+			//alert(msg.popup);
+			port.postMessage( {BackGround: DepenDNS.domain} );
+			}
+			});
+		});
+
+</script>
+</html>
+
+
+
