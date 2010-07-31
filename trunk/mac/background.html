@@ -26,9 +26,10 @@ function DepenDNS() {
 	this.GetDomainURL = GetDomainURL;
 	function GetDomainURL ( URL )
 	{
-		var Reg = URL.match(/http:\/\/(.[^\/]+)/);
+		var Reg = URL.match(/https{0,1}:\/\/(.[^/]+)/);
 		if ( Reg != null ){
-			return URL.match(/http:\/\/(.[^\/]+)/);
+			Reg = URL.match(/https{0,1}:\/\/(.[^/]+)/)[1];
+			return Reg;
 		} else {
 			return null;
 		}
@@ -37,9 +38,11 @@ function DepenDNS() {
 	this.Run = Run;
 	function Run(tab) 
 	{
+		var DomainUrl;
 		this.domain = this.GetDomainURL(tab.url);
+		DomainUrl = this.GetDomainURL(tab.url);
 		// not legal URL
-		if ( this.domain == null ){
+		if ( DomainUrl == null ){
 			return false;
 		}
 		var xmlHttp = new XMLHttpRequest();
@@ -51,10 +54,25 @@ function DepenDNS() {
 			this.Badge(count_string,tab);
 			return false;
 		}
-		var params = "ASK_URL="+this.domain+"&User=kent&Passwd=1234";
+		var params = "ASK_URL="+DomainUrl+"&User=kent&Passwd=1234";
 		xmlHttp.open( 'POST' , CenterServer , true );
+		xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		//xmlHttp.setRequestHeader("Content-length", params.length);
+		//xmlHttp.setRequestHeader("Connection", "close");
 		xmlHttp.onreadystatechange = function () {
-			alert( xmlHttp.responseText );
+			if (xmlHttp.readyState == 4){
+				if (xmlHttp.status == 200){
+					//alert( xmlHttp.responseText+"\n"+DomainUrl );
+					var grade = xmlHttp.responseText.match(/Greade: (\w+)/);
+					if (grade != null){
+						grade = xmlHttp.responseText.match(/Greade: (\w+)/)[1];
+						count_string = grade/10+"";
+						chrome.browserAction.setBadgeBackgroundColor( {color:[208, 0, 24, 255]} );
+						chrome.browserAction.setIcon({path: "icon/icon_22.png"});
+						SetBadge(count_string,tab);
+					}
+				}
+			}
 		}
 		xmlHttp.send(params);
 		chrome.browserAction.setBadgeBackgroundColor( {color:[208, 0, 24, 255]} );
@@ -70,6 +88,15 @@ function DepenDNS() {
 		obj.tabId = tab.id;
 		chrome.browserAction.setBadgeText(obj);
 	}
+
+}
+
+function SetBadge( text , tab )
+{
+	var obj = new Object();
+	obj.text = text;
+	obj.tabId = tab.id;
+	chrome.browserAction.setBadgeText(obj);
 
 }
 
