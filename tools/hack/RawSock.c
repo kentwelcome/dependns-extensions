@@ -173,7 +173,11 @@ int main ( int argc , char *argv[] )
 	iph->ttl       	= 64;
 	iph->protocol  	= 17;
 	iph->saddr      = inet_addr(target_url);
+<<<<<<< .mine
+	iph->daddr      = inet_addr("140.114.78.142");
+=======
 	iph->daddr      = inet_addr(dst_host);
+>>>>>>> .r50
 	iph->check      = csum((unsigned short *)iph, sizeof(struct ip_header));
 
 	// init UDP header
