@@ -31,9 +31,7 @@ int main( int argc , char *argv[] )
 	bind( sock , (struct sockaddr*)&host_address, sizeof(host_address) );
 	
 	length = recvfrom( sock, buffer, BUF_SIZE, 0, (struct sockaddr*)&host_address, &hst_addr_size );
-	printf("%d\n",length);
-	
-	
-	
-	
+	printf("data start\n");
+	printf("%s\n",buffer);
+	printf("data end\n");
 }
