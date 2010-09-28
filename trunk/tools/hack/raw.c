@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
 	ip->iph_ihl = 5;
 	ip->iph_ver = 4;
 	ip->iph_tos = 16; // Low delay
-	ip->iph_len = sizeof(struct ipheader) + sizeof(struct udpheader);
+	ip->iph_len = sizeof(struct ipheader) + sizeof(struct udpheader) + 1;
 	ip->iph_ident = htons(54321);
 	ip->iph_ttl = 64; // hops
 	ip->iph_protocol = 17; // UDP
