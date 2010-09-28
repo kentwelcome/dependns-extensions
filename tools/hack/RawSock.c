@@ -110,8 +110,12 @@ int main ( int argc , char *argv[] )
 	unsigned char	SendMessage[128];
 	int 		i , j;
 
-	strncpy(SendMessage,"hacker test",strlen("hacker test")-1);
-
+	for( i = 0 ; i < 128 ; i++ ){
+		SendMessage[i] = '\0';
+	}
+	strncpy(SendMessage,"hacker",strlen("hacker"));
+	send_len = strlen(SendMessage);
+	printf ("Message: %s\nLength: %d\n",SendMessage,send_len);
 	if( argc != 3 && argc != 4 )
 	{
 		fprintf(stderr,"usage: %s TargetHost DstHost [Port]\n",argv[0]);
@@ -127,11 +131,12 @@ int main ( int argc , char *argv[] )
 	strncpy( dst_host , argv[2] , strlen(argv[2]) );
 	// init target port (default port 53)
 	port = 53;
-	if ( argc == 3 ){
+	if ( argc == 4 ){
 		port = atoi(argv[3]);
 	}
-	printf("Target Host: %s\n",target_url);
-
+	printf("Src Host: %s\n",target_url);
+	printf("Dst Host: %s\n",dst_host);
+	printf("Port: %d\n",port);
 	// start up query socket 
 	server_addr.sin_family = AF_INET;
 	server_addr.sin_port = htons(port);
@@ -149,9 +154,7 @@ int main ( int argc , char *argv[] )
 	if ( setsockopt(sock_attack , IPPROTO_IP, IP_HDRINCL, &olen, sizeof(olen)) == -1 )
 		perror("ERROR: could not set socket option IP_HDRINCL.");
 
-	send_len = strlen(SendMessage);
 	server_len = sizeof( struct sockaddr_in );
-	printf ("Message Length: %s %d\n",SendMessage,send_len);
 	// create raw socket packet
 	packet 		= calloc( 1 , sizeof(struct udp_packet) + send_len );
 	iph 		= &packet->iph;
@@ -173,14 +176,15 @@ int main ( int argc , char *argv[] )
 	// init UDP header
 	udph->len      	= htons(sizeof(struct udp_header) + send_len);
 	udph->check  	= 0;
-	udph->source 	= htons(port);
+	udph->source 	= htons(port+1);
 	udph->dest   	= htons(port);
-	memcpy( (unsigned char*)&packet[1] , attack , send_len);
+	memcpy( (unsigned char*)&packet[1] , SendMessage , send_len);
 	//(&packet->iph)->saddr      = inet_addr(target_url);	
 
-	for( i = 0 ; i < 6 ; i++ )
+	for( i = 0 ; i < 1 ; i++ )
 	{
-		sendto( sock_attack , packet , sizeof(struct udp_packet) + send_len ,  0 , (struct sockaddr*)&server_addr , server_len );
+		j = sendto( sock_attack , packet , sizeof(struct udp_packet) + send_len ,  0 , (struct sockaddr*)&server_addr , server_len );
+		printf("%d\n",j);
 	}
 
 	return 0;
