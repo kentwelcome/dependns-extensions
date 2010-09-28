@@ -21,7 +21,7 @@ function DepenDNS() {
 	this.ips = [];
 	this.count = 0;
 	var count_string = "";
-	var CenterServer = "http://is10.cs.nthu.edu.tw/~kent/post.php";
+	var CenterServer = "http://140.114.78.142/~kent/DepenDNS/post.php";
 	
 	this.GetDomainURL = GetDomainURL;
 	function GetDomainURL ( URL )
@@ -54,7 +54,7 @@ function DepenDNS() {
 			this.Badge(count_string,tab);
 			return false;
 		}
-		var params = "ASK_URL="+DomainUrl+"&User=kent&Passwd=1234";
+		var params = "ASK_URL="+DomainUrl+"&User=kent&Passwd=123";
 		xmlHttp.open( 'POST' , CenterServer , true );
 		xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		//xmlHttp.setRequestHeader("Content-length", params.length);
