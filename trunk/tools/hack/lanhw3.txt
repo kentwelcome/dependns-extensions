@@ -1,0 +1,77 @@
+組員：
+	9562204	黃冠霖
+	9562226 李宗瑜
+	9562227 謝學儀
+	9562233 張皓傑
+	
+
+1. 編譯環境
+	Linux ubuntu 2.6.28-11-server
+	FreeBSD 6.2-PRERELEASE
+
+2. 使用方式
+	compile:
+	ubuntu:
+		root@ubuntu:/home/kent/LAN# gcc -o hw3_v1 hw3_v1.c -lnet -lpcap -lpthread 
+	FreeBSD:
+		kent@kentBSD[~/LAN]>gcc -o BPDU BPDU.c -lpcap -lpthread -I/usr/local/include/libnet11 -DLIBNET_BSDISH_OS -DLIBNET_BSD_BYTE_SWAP -DHAVE_SOCKADDR_SA_LEN -L/usr/local/lib/libnet11 -lnet
+
+	run:
+	kent@ubuntu:~/LAN$ sudo ./hw3_v1 bid
+		bid如果不設定的話ubuntu預設為0x8000
+						 freebsd預設為0x5000
+						 
+3. 作業學到什麼東西
+
+	這次作業寫完之後大概學到怎麼用 libpcap 和 libnet
+	來送封包和擷取網路卡上的data，並且將BPDU package用
+	libnet api打包起來，讓網路卡送出去。
+	
+4. 遇到的困難
+
+	照著助教給的範例程式，可以完成送BPDU package的功能，皆下來要做的就是
+	
+	結合上一次作業寫的bridge，讓他可以跑Spanning Tree Algorithm，
+	
+	中間有碰到一點點小困難就是，libnet裡struct libnet_stp_conf_hdr
+	
+	的定義裡面，在抓stp_rootpc的時候怪怪的，雖然是u_int32_t的長度，
+	
+	可是最會抓出來的東西卻往後移了幾位，所以造成後面其他抓出來的東西也
+	
+	都亂調了。解決辦法是我們重新定義了一個struct，把原本
+	struct libnet_stp_conf_hdr
+	{
+		u_int16_t stp_id;         /* protocol id */
+		u_int8_t stp_version;     /* protocol version */
+		u_int8_t stp_bpdu_type;   /* bridge protocol data unit type */
+		u_int8_t stp_flags;       /* control flags */
+		u_int8_t stp_rootid[8];   /* root id */
+		u_int32_t stp_rootpc;      /* root path cost */
+		u_int8_t stp_bridgeid[8]; /* bridge id */
+		u_int16_t stp_portid;     /* port id */
+		u_int16_t stp_mage;       /* message age */
+		u_int16_t stp_maxage;     /* max age */
+		u_int16_t stp_hellot;     /* hello time */
+		u_int16_t stp_fdelay;     /* forward delay */
+	};
+	在root path cost的地方修改一下，改成
+		u_int8_t stp_rootpc[4];      /* root path cost */
+	
+	這樣就可以正常的讀出data。
+	
+	然後在環境的部分也是比較不好搞定，我們是用一台vmware模擬出兩台虛擬
+	
+	機器，在各模擬出兩張網卡，用NAT的模式跑兩個區網，然後把兩台機器對接成
+	
+	一個環狀的網路，兩台分別跑ubuntu和freeBSD的OS。在freebsd底下網路卡的名稱
+	
+	是以em0、em1命名的，所以程式的內容有點稍微不一樣。	
+
+	最後在測試的時候，在freebsd上面跑得bridge，原本會在網卡開始listen之前就送出get root 的BPDU package，
+	
+	如果另一個bridge收到以後馬上回傳他的bridge id，freebsd上會因為網卡還來不及開啟，所以會漏掉package
+	
+	解決辦法就是等到網卡真正開始listen之後才開始送BPDU。
+ 
+
