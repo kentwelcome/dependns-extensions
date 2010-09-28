@@ -144,7 +144,7 @@ int main ( int argc , char *argv[] )
 	// start up query socket 
 	server_addr.sin_family = AF_INET;
 	server_addr.sin_port = htons(port);
-	server_addr.sin_addr.s_addr = inet_addr("140.114.63.1");//addr->s_addr;
+	server_addr.sin_addr.s_addr = inet_addr("192.168.10.1");//addr->s_addr;
 	bzero(&(server_addr.sin_zero),8);
 	clinet_addr.sin_family = AF_INET;
 	clinet_addr.sin_port = htons(port);
@@ -247,7 +247,7 @@ int main ( int argc , char *argv[] )
 	iph->protocol  = 17;
 	udph->len      = htons(sizeof(struct udp_header) + send_len);
 	iph->saddr      = inet_addr("18.72.0.3");
-	iph->daddr      = inet_addr("140.114.63.1");
+	iph->daddr      = inet_addr("192.168.10.1");
 	iph->check      = csum((unsigned short *)iph, sizeof(struct ip_header));
 	udph->check  = 0;	// UDP header
 	udph->source = htons(53);
