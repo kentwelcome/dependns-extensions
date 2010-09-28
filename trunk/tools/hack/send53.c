@@ -26,7 +26,7 @@ int main( int argc , char *argv[] )
 		port = atoi(argv[2]);
 	}
 	printf("Send to %s port %d\n",dst,port);
-	strncpy(buffer,"test1234",strlen("test1234"));
+	strncpy(buffer,"hacker",strlen("hacker"));
 
 	sock = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP);
 	/*init the host_address the socket is beeing bound to*/
