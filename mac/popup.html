@@ -1,146 +1,91 @@
 <html>
-	<body>
-		<p><b> Javascript display</b>
-		<p><div id="display">&nbsp;</div>
-	</body>
-	<script type="text/javascript" src="js/Answer.js"></script>
-	<script type="text/javascript" src="js/AnswerIP.js"></script>
-	<script type="text/javascript" src="js/ArrayList.js"></script>
-	<script type="text/javascript" src="js/Integer.js"></script>
-	<script type="text/javascript" src="js/String.js"></script>
-	<script type="text/javascript" src="js/Match.js"></script>
-	<script type="text/javascript" src="js/IPChoice.js"></script>
-	<script type="text/javascript" src="js/DNSLookup.js"></script>
-	<script type="text/javascript" src="js/Response.js"></script>
-	<script type="text/javascript" src="js/Response.js"></script>
-	<script type="text/javascript" src="js/HistoryLookup.js"></script>
-	<!--<script type="text/javascript" src="../../sample.js"></script>-->
-	<embed type="application/x-dependdns" id="pluginId">
-	<script>
-		var resolverList = new ArrayList();
-		// set resolver list
-		resolverList.add("168.95.1.1");
-		resolverList.add("168.95.192.1");
-		resolverList.add("139.175.55.244");
-		resolverList.add("139.175.252.16");
-		resolverList.add("139.175.150.20");
-		resolverList.add("139.175.10.20");
-		resolverList.add("203.187.0.6");
-		resolverList.add("203.133.1.8");
-		resolverList.add("211.78.130.1");
-		resolverList.add("211.78.130.2");
-		resolverList.add("61.56.211.185");
-		resolverList.add("211.78.215.200");
-		resolverList.add("211.78.215.137");
-		resolverList.add("210.200.211.193");
-		resolverList.add("210.200.211.225");
-		resolverList.add("203.79.224.10");
-		resolverList.add("203.79.224.30")
-		var index = 0;
-		var LoockUp = document.getElementById("pluginId");
+<body>
+<p><b> Get URL Info</b>
+<p><div id="display"></div>
+</body>
+<script type="text/javascript" src="js/Answer.js"></script>
+<script type="text/javascript" src="js/AnswerIP.js"></script>
+<script type="text/javascript" src="js/ArrayList.js"></script>
+<script type="text/javascript" src="js/Integer.js"></script>
+<script type="text/javascript" src="js/String.js"></script>
+<script type="text/javascript" src="js/Match.js"></script>
+<script type="text/javascript" src="js/IPChoice.js"></script>
+<script type="text/javascript" src="js/DNSLookup.js"></script>
+<script type="text/javascript" src="js/Response.js"></script>
+<script type="text/javascript" src="js/Response.js"></script>
+<script type="text/javascript" src="js/HistoryLookup.js"></script>
+<!--<script type="text/javascript" src="../../sample.js"></script>-->
+<script>
 
-		// addMethod - By John Resig (MIT Licensed)
-		function addMethod(object , name, fn ){
-			var old = object[ name ];
-			object[ name ] = function(){
-				if ( fn.length == arguments.length )
-				return fn.apply( this, arguments );
-				else if ( typeof old == 'function' )
-				return old.apply( this, arguments );
-			};
-		}
+var CenterServer = "http://is.cs.nthu.edu.tw/~kent/post.php";
+// addMethod - By John Resig (MIT Licensed)
+function addMethod(object , name, fn ){
+	var old = object[ name ];
+	object[ name ] = function(){
+		if ( fn.length == arguments.length )
+			return fn.apply( this, arguments );
+		else if ( typeof old == 'function' )
+			return old.apply( this, arguments );
+	};
+}
 
-		function Class_test(text,text2)
-		{
-                        if( text )
-				alert(text);
-			else
-				alert("!!!");
-		} 
+var index = 0;
 
+function init(){
+	var status = document.getElementById('display');
+	status.innerHTML = '';
+}
 
-		function init(){
-			var status = document.getElementById('display');
-			status.innerHTML = '';
-		}
+function display( text ){
+	var id = 'phrase' + index++;
+	var status = document.getElementById('display');
+	status.innerHTML += '<span id="'+ id + '"></span><br>';
+	//var bullet = '(' + ( index ) + ') ';
+	document.getElementById(id).innerHTML = text ;
 
-		function display( text ){
-			var id = 'phrase' + index++;
-			var status = document.getElementById('display');
-			status.innerHTML += '<span id="'+ id + '"></span><br>';
-			var bullet = '(' + ( index ) + ') ';
-			document.getElementById(id).innerHTML = bullet +'&nbsp;' + text ;
-			
-		}
+}
 
-		/*
-		function test(){
-			var list = new ArrayList();
-			var a;
-			list.add(new Integer(300) );
-			list.add(new Integer(1) );
-			list.add(500);
-
-			var status = document.getElementById('display');
-			
-			for( var i = 0 ; i < list.size() ; i++ )
-			{
-				var id = 'phrase' + index++;
-				status.innerHTML += '<span id="'+ id + '"></span><br>';
-				var bullet = '(' + ( index+ 1) + ') ';	
-				document.getElementById(id).innerHTML =  bullet + '&nbsp;' + list.get(i) ;
-			}
-		}*/
-
-
-		
-               	var domain;
-		var ResolveAns = new Array();
-		var oneTimeCount = new Array();
-		var HisDB = new HistoryLookup();
-		var port = chrome.extension.connect({name: "parse_url"});
-		port.postMessage({popup: "URL"});
-		port.onMessage.addListener( function(msg){
+var port = chrome.extension.connect({name: "parse_url"});
+port.postMessage({popup: "URL"});
+port.onMessage.addListener( function(msg){
 			domain = msg.BackGround;
 			if (domain == null)
 				exit(0);
-			for ( var i = 0 ; i < resolverList.size() ; i++ ){
-				var Res = resolverList.get(i);
-				var tmp = LoockUp.SendQuery(domain,Res);
-				oneTimeCount.push(tmp.length);
-				ResolveAns.push(tmp);
-			}
-			//var tmp = ResolveAns[0];
-			//display(ResolveAns[0]);
-			//display(tmp.length+":"+tmp[0]);
-			var  dnslookup = new DNSLookup();
-			dnslookup.setQuery(domain);
-			dnslookup.setResolver(resolverList);
-			HisDB.setDomainName(domain);
-			HisDB.setResolveAnswer(ResolveAns);
-			HisDB.run(domain);
-			var His = HisDB.getHistoryList();
-			
-			var G = dnslookup.doLookup(ResolveAns,oneTimeCount,His);
-			display(G);
-
+			SendHTTPRequest(domain);
 		});
-		
-		function get_domain_from_url(url)
-		{
-			return  url.match(/:\/\/(.[^/]+)/)[1];
+
+function SendHTTPRequest( DomainUrl )
+{
+	var xmlHttp = new XMLHttpRequest();
+	// The browser does not support xmlHttpRequest
+	if ( !xmlHttp ){
+		display("Server offline<br>");
+		return false;
+	}
+	var params = "ASK_URL="+DomainUrl+"&User=kent&Passwd=1234";
+	xmlHttp.open( 'POST' , CenterServer , true );
+	xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xmlHttp.onreadystatechange = function () {
+		if (xmlHttp.readyState == 4){
+			if (xmlHttp.status == 200){
+				var URLInfo = xmlHttp.responseText.replace(/.*\n?.*\|/,'');
+				display( URLInfo+"\n"+DomainUrl );
+				var grade = xmlHttp.responseText.match(/Greade: (\w+)/);
+			}
 		}
+	}
+	xmlHttp.send(params);
 
-		var resolvecount = 17;
-		init();
+}
 
-		// free memory 
-		delete ResolveAns;
-		delete oneTimeCount;
-		delete dnslookup;
-		delete resolverList;
-		delete HisDB;
+function get_domain_from_url(url)
+{
+	return  url.match(/:\/\/(.[^/]+)/)[1];
+}
 
-	</script>
+
+// free memory 
+
+</script>
 
 </html>
