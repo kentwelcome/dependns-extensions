@@ -8,7 +8,6 @@
 <script type="text/javascript" src="js/ArrayList.js"></script>
 <script type="text/javascript" src="js/Integer.js"></script>
 <script type="text/javascript" src="js/String.js"></script>
-<script type="text/javascript" src="js/Match.js"></script>
 <script type="text/javascript" src="js/IPChoice.js"></script>
 <script type="text/javascript" src="js/DNSLookup.js"></script>
 <script type="text/javascript" src="js/Response.js"></script>
@@ -17,7 +16,7 @@
 <!--<script type="text/javascript" src="../../sample.js"></script>-->
 <script>
 
-var CenterServer = "http://is.cs.nthu.edu.tw/~kent/post.php";
+var CenterServer = "http://moon.cs.nthu.edu.tw/~kent/DepenDNS/post.php";
 // addMethod - By John Resig (MIT Licensed)
 function addMethod(object , name, fn ){
 	var old = object[ name ];
@@ -62,7 +61,7 @@ function SendHTTPRequest( DomainUrl )
 		display("Server offline<br>");
 		return false;
 	}
-	var params = "ASK_URL="+DomainUrl+"&User=kent&Passwd=1234";
+	var params = "ASK_URL="+DomainUrl+"&User=kent&Passwd=123";
 	xmlHttp.open( 'POST' , CenterServer , true );
 	xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xmlHttp.onreadystatechange = function () {
