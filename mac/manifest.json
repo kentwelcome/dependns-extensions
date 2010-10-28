@@ -1,6 +1,6 @@
 {
-  "name": "DepenDNS Lite alpha",
-  "version": "2.2",
+  "name": "DepenDNS Lite Beta",
+  "version": "2.3",
   "description": "The DepenDNS is a browser extesion to defence DNS cache poisoning. This version can work on all the platform Google chrome release.",
   "background_page": "background.html",
   "browser_action": {
