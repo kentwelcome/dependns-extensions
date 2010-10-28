@@ -1,7 +1,16 @@
 <html>
+<head>
+<link rel=stylesheet type="text/css" href="main.css" media="screen">
+</head>
 <body>
-<p><b> Get URL Info</b>
-<p><div id="display"></div>
+<div id="Title">
+	<p><b> URL Domain Info</b></p>
+</div>
+<p>
+<div id="Theme">
+	<div id="display"></div>
+</div>
+</p>
 </body>
 <script type="text/javascript" src="js/Answer.js"></script>
 <script type="text/javascript" src="js/AnswerIP.js"></script>
@@ -47,10 +56,10 @@ function display( text ){
 var port = chrome.extension.connect({name: "parse_url"});
 port.postMessage({popup: "URL"});
 port.onMessage.addListener( function(msg){
-			domain = msg.BackGround;
-			if (domain == null)
-				exit(0);
-			SendHTTPRequest(domain);
+		domain = msg.BackGround;
+		if (domain == null)
+		exit(0);
+		SendHTTPRequest(domain);
 		});
 
 function SendHTTPRequest( DomainUrl )

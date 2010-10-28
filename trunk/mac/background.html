@@ -61,9 +61,9 @@ function DepenDNS() {
 			if (xmlHttp.readyState == 4){
 				if (xmlHttp.status == 200){
 					//alert( xmlHttp.responseText+"\n"+DomainUrl );
-					var grade = xmlHttp.responseText.match(/Greade: (\w+)/);
+					var grade = xmlHttp.responseText.match(/Grade: (\w+)/);
 					if (grade != null){
-						grade = xmlHttp.responseText.match(/Greade: (\w+)/)[1];
+						grade = xmlHttp.responseText.match(/Grade: (\w+)/)[1];
 						count_string = grade/10+"";
 						chrome.browserAction.setBadgeBackgroundColor( {color:[208, 0, 24, 255]} );
 						chrome.browserAction.setIcon({path: "icon/icon_22.png"});
