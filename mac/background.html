@@ -1,15 +1,5 @@
 <html>
 <!--<script type="text/javascript"  src="js/gears_init.js"></script> -->
-<script type="text/javascript"  src="js/ArrayList.js"></script>
-<script type="text/javascript"  src="js/Integer.js"></script>
-<script type="text/javascript"  src="js/String.js"></script>
-<script type="text/javascript"  src="js/Answer.js"></script>
-<script type="text/javascript"  src="js/AnswerIP.js"></script>
-<script type="text/javascript"  src="js/IPChoice.js"></script>
-<script type="text/javascript"  src="js/DNSLookup.js"></script>
-<script type="text/javascript"  src="js/Response.js"></script>
-<script type="text/javascript"  src="js/Response.js"></script>
-<script type="text/javascript"  src="js/HistoryLookup.js"></script>
 <script>
 var tab_url;
 
@@ -18,8 +8,9 @@ function DepenDNS() {
 	var count;
 	this.ips = [];
 	this.count = 0;
-	var count_string = "";
-	var CenterServer = "http://140.114.78.142/~kent/DepenDNS/post.php";
+	var count_string = "Load";
+	var CenterServer = "http://140.113.87.227/DepenDNS/post.php";
+	this.domain = "";
 	
 	this.GetDomainURL = GetDomainURL;
 	function GetDomainURL ( URL )
@@ -36,13 +27,12 @@ function DepenDNS() {
 	this.Run = Run;
 	function Run(tab) 
 	{
-		var DomainUrl;
 		this.domain = this.GetDomainURL(tab.url);
-		DomainUrl = this.GetDomainURL(tab.url);
 		// not legal URL
-		if ( DomainUrl == null ){
+		if ( this.domain == null ){
 			return false;
 		}
+
 		var xmlHttp = new XMLHttpRequest();
 		// The browser does not support xmlHttpRequest
 		if ( !xmlHttp ){
@@ -52,15 +42,12 @@ function DepenDNS() {
 			this.Badge(count_string,tab);
 			return false;
 		}
-		var params = "ASK_URL="+DomainUrl+"&User=kent&Passwd=123";
+		var params = "ASK_URL="+this.domain+"&User=kent&Passwd=123";
 		xmlHttp.open( 'POST' , CenterServer , true );
 		xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		//xmlHttp.setRequestHeader("Content-length", params.length);
-		//xmlHttp.setRequestHeader("Connection", "close");
-		xmlHttp.onreadystatechange = function () {
+		xmlHttp.onreadystatechange = function() {
 			if (xmlHttp.readyState == 4){
 				if (xmlHttp.status == 200){
-					//alert( xmlHttp.responseText+"\n"+DomainUrl );
 					var grade = xmlHttp.responseText.match(/Grade: (\w+)/);
 					if (grade != null){
 						grade = xmlHttp.responseText.match(/Grade: (\w+)/)[1];
@@ -77,7 +64,6 @@ function DepenDNS() {
 		chrome.browserAction.setIcon({path: "icon/icon_22.png"});
 		this.Badge(count_string,tab);
 	}
-
 	this.Badge = Badge;
 	function Badge( text , tab ) 
 	{

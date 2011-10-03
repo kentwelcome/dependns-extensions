@@ -25,7 +25,7 @@
 <!--<script type="text/javascript" src="../../sample.js"></script>-->
 <script>
 
-var CenterServer = "http://moon.cs.nthu.edu.tw/~kent/DepenDNS/post.php";
+var CenterServer = "http://140.113.87.227/DepenDNS/post.php";
 // addMethod - By John Resig (MIT Licensed)
 function addMethod(object , name, fn ){
 	var old = object[ name ];
@@ -78,7 +78,7 @@ function SendHTTPRequest( DomainUrl )
 			if (xmlHttp.status == 200){
 				var URLInfo = xmlHttp.responseText.replace(/.*\n?.*\|/,'');
 				display( URLInfo+"\n"+DomainUrl );
-				var grade = xmlHttp.responseText.match(/Greade: (\w+)/);
+				var grade = xmlHttp.responseText.match(/Grade: (\w+)/);
 			}
 		}
 	}
