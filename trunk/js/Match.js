@@ -34,7 +34,7 @@ function Match( AnswerList , HistoryList , oneTimeCount ) {
 
 		this.ipDifference = ipDifference;
 		function ipDifference(){
-			//±Nanswer list¥ş¾ã²z¨ì³æ¤@array list¤¤
+			//å°‡answer listå…¨æ•´ç†åˆ°å–®ä¸€array listä¸­
 			//IpListAll = new ArrayList();
 			for ( var i = 0 ; i < AnswerList.size() ; i++ )
 			{
@@ -43,7 +43,7 @@ function Match( AnswerList , HistoryList , oneTimeCount ) {
 				IpListAll.addAll(ipList);
 			}
 
-			//§ä¥Xn_max
+			//æ‰¾å‡ºn_max
 			var n_max = 0;
 			for ( var i = 0 ; i < IpListAll.size() ; i++ ){
 				var AnsIP = IpListAll.get(i);
@@ -51,7 +51,7 @@ function Match( AnswerList , HistoryList , oneTimeCount ) {
 					n_max = AnsIP.getCount();
 				}
 			}
-			//®e§Ô­È
+			//å®¹å¿å€¼
 			confidence = 0.80;
 
 			//Count alapha
@@ -66,7 +66,7 @@ function Match( AnswerList , HistoryList , oneTimeCount ) {
 
 		this.historyDifference = historyDifference;
 		function historyDifference() {
-			//±Nhistory list¥ş¾ã²z¨ì³æ¤@array list¤¤
+			//å°‡history listå…¨æ•´ç†åˆ°å–®ä¸€array listä¸­
 			//IpHistoryList = new ArrayList();
 			for ( var i = 0 ; i < HistoryList.size() ; i++ )
 			{
@@ -74,7 +74,7 @@ function Match( AnswerList , HistoryList , oneTimeCount ) {
 				var ipList = His.getIPList();
 				IpHistoryList.addAll(ipList);
 			}
-			//¤ñ¹ï¾ú¥v¸ê®Æ
+			//æ¯”å°æ­·å²è³‡æ–™
 			for ( var i = 0 ; i < IpListAll.size() ; i++ )
 			{
 				var iplist = IpListAll.get(i);
@@ -93,8 +93,8 @@ function Match( AnswerList , HistoryList , oneTimeCount ) {
 		}
 		this.bClassDifference = bClassDifference;
 		function bClassDifference(){
-			//¦pªG¥u¦³¤@­Óclass B, «h¶È¶È¤ñ¹ï¸Óclass¤¤ªºIP
-			//§_«h¤ñ¹ïclass B¦Ê¤À¤ñ¬O§_¸ò¾ú¥v¸ê®Æ¬Ûªñ
+			//å¦‚æœåªæœ‰ä¸€å€‹class B, å‰‡åƒ…åƒ…æ¯”å°è©²classä¸­çš„IP
+			//å¦å‰‡æ¯”å°class Bç™¾åˆ†æ¯”æ˜¯å¦è·Ÿæ­·å²è³‡æ–™ç›¸è¿‘
 			if ( AnswerList.size() == 1)
 			{
 				var Ans = AnswerList.get(0);
@@ -184,19 +184,19 @@ function Match( AnswerList , HistoryList , oneTimeCount ) {
 
 		this.printAnswer = printAnswer;
 		function printAnswer(){
-			//display("¾ú¥v¸ê®Æ");
+			//display("æ­·å²è³‡æ–™");
 			for( var i = 0 ; i < HistoryList.size() ; i++ ){
 				//var Ans = AnswerList.get(i);
 				var His = HistoryList.get(i);
 				var temp = His.getClassCount()/48.0;
 				temp = Math.floor(temp*1000) / 1000.0;
-				display("¤lºô¸ô:&nbsp;" + His.getBClass() + "&nbsp;" + temp + "&nbsp;" + His.getClassCountPercent() );
+				display("å­ç¶²è·¯:&nbsp;" + His.getBClass() + "&nbsp;" + temp + "&nbsp;" + His.getClassCountPercent() );
 				His.printAnswer();
 			}
-			display("³o¦¸¸ê®Æ");
+			display("é€™æ¬¡è³‡æ–™");
 			for( var i = 0 ; i < AnswerList.size() ; i++ ){
 				var Ans = AnswerList.get(i);
-				display("¤lºô¸ô:&nbsp;" + Ans.getBClass()+"&nbsp;"+ Ans.getClassCount() + "&nbsp;" + Ans.getClassCountPercent() );
+				display("å­ç¶²è·¯:&nbsp;" + Ans.getBClass()+"&nbsp;"+ Ans.getClassCount() + "&nbsp;" + Ans.getClassCountPercent() );
 			}
 		}
 
